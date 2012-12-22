@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+  <!--<environmentMode>TRACE</environmentMode>-->
+  <solutionClass>org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour</solutionClass>
+  <planningEntityClass>org.droolsplannerdelirium.travelingsanta.domain.Visit</planningEntityClass>
+
+  <scoreDirectorFactory>
+    <scoreDefinitionType>SIMPLE</scoreDefinitionType>
+    <!--<incrementalScoreCalculatorClass>org.droolsplannerdelirium.travelingsanta.solver.score.TspIncrementalScoreCalculator</incrementalScoreCalculatorClass>-->
+    <scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>
+    <!--<assertionScoreDirectorFactory>-->
+      <!--<scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>-->
+    <!--</assertionScoreDirectorFactory>-->
+  </scoreDirectorFactory>
+
+  <termination>
+    <maximumMinutesSpend>2</maximumMinutesSpend>
+  </termination>
+  <constructionHeuristic>
+    <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+  </constructionHeuristic>
+  <localSearch>
+    <unionMoveSelector>
+      <changeMoveSelector>
+        <cacheType>PHASE</cacheType>
+        <selectionOrder>SHUFFLED</selectionOrder>
+      </changeMoveSelector>
+      <swapMoveSelector>
+        <cacheType>PHASE</cacheType>
+        <selectionOrder>SHUFFLED</selectionOrder>
+      </swapMoveSelector>
+      <!--<subChainChangeMoveSelector>-->
+        <!--<selectReversingMoveToo>false</selectReversingMoveToo>-->
+      <!--</subChainChangeMoveSelector>-->
+      <!--<subChainSwapMoveSelector>-->
+        <!--<selectReversingMoveToo>false</selectReversingMoveToo>-->
+      <!--</subChainSwapMoveSelector>-->
+    </unionMoveSelector>
+    <acceptor>
+      <solutionTabuSize>1000</solutionTabuSize>
+      <planningEntityTabuSize>7</planningEntityTabuSize>
+    </acceptor>
+    <forager>
+      <minimalAcceptedSelection>10000</minimalAcceptedSelection>
+    </forager>
+  </localSearch>
+</solver>
