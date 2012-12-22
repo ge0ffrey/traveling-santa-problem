@@ -62,8 +62,8 @@ public class City extends AbstractPersistable {
     public int getDistance(org.droolsplannerdelirium.travelingsanta.domain.City city) {
         // Implementation specified by TSPLIB http://www2.iwr.uni-heidelberg.de/groups/comopt/software/TSPLIB95/
         // Euclidean distance (Pythagorean theorem) - not correct when the surface is a sphere
-        double latitudeDifference = Math.abs(city.latitude - latitude);
-        double longitudeDifference = Math.abs(city.longitude - longitude);
+        double latitudeDifference = city.latitude - latitude;
+        double longitudeDifference = city.longitude - longitude;
         double distance = Math.sqrt(
                 (latitudeDifference * latitudeDifference) + (longitudeDifference * longitudeDifference));
         return (int) (distance + 0.5);
