@@ -16,13 +16,8 @@
 
 package org.droolsplannerdelirium.travelingsanta.solver.score;
 
-import org.drools.planner.core.score.buildin.hardandsoft.DefaultHardAndSoftScore;
-import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScore;
-import org.drools.planner.core.score.buildin.hardandsoftlong.DefaultHardAndSoftLongScore;
 import org.drools.planner.core.score.buildin.hardmediumsoft.DefaultHardMediumSoftScore;
 import org.drools.planner.core.score.buildin.hardmediumsoft.HardMediumSoftScore;
-import org.drools.planner.core.score.buildin.simple.DefaultSimpleScore;
-import org.drools.planner.core.score.buildin.simple.SimpleScore;
 import org.drools.planner.core.score.director.incremental.AbstractIncrementalScoreCalculator;
 import org.droolsplannerdelirium.travelingsanta.domain.Appearance;
 import org.droolsplannerdelirium.travelingsanta.domain.Domicile;

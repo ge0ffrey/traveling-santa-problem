@@ -29,6 +29,7 @@ import org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour;
 import org.droolsplannerdelirium.travelingsanta.domain.Visit;
 import org.droolsplannerdelirium.travelingsanta.persistence.TspDaoImpl;
 
+@SuppressWarnings("unused")
 public class TspSolutionImporter extends AbstractTxtSolutionImporter {
 
     private static final String INPUT_FILE_SUFFIX = ".csv";
