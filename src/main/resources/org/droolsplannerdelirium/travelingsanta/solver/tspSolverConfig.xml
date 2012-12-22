@@ -6,8 +6,8 @@
 
   <scoreDirectorFactory>
     <scoreDefinitionType>SIMPLE</scoreDefinitionType>
-    <!--<incrementalScoreCalculatorClass>org.droolsplannerdelirium.travelingsanta.solver.score.TspIncrementalScoreCalculator</incrementalScoreCalculatorClass>-->
-    <scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>
+    <incrementalScoreCalculatorClass>org.droolsplannerdelirium.travelingsanta.solver.score.TspIncrementalScoreCalculator</incrementalScoreCalculatorClass>
+    <!--<scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>-->
     <!--<assertionScoreDirectorFactory>-->
       <!--<scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>-->
     <!--</assertionScoreDirectorFactory>-->

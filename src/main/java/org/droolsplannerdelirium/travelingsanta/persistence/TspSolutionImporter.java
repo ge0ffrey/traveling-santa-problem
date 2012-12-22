@@ -31,7 +31,7 @@ import org.droolsplannerdelirium.travelingsanta.persistence.TspDaoImpl;
 
 public class TspSolutionImporter extends AbstractTxtSolutionImporter {
 
-    private static final String INPUT_FILE_SUFFIX = ".tsp";
+    private static final String INPUT_FILE_SUFFIX = ".csv";
 
     public static void main(String[] args) {
         new org.droolsplannerdelirium.travelingsanta.persistence.TspSolutionImporter().convertAll();
@@ -61,41 +61,25 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
             travelingSalesmanTour.setId(0L);
             readHeaders();
             readCityList();
-            readConstantLine("EOF");
             createVisitList();
-            BigInteger possibleSolutionSize = factorial(travelingSalesmanTour.getCityList().size() - 1);
-            String flooredPossibleSolutionSize = "10^" + (possibleSolutionSize.toString().length() - 1);
-            logger.info("TravelingSalesmanTour {} has {} cities with a search space of {}.",
-                    getInputId(),
-                    travelingSalesmanTour.getCityList().size(),
-                    flooredPossibleSolutionSize);
             return travelingSalesmanTour;
         }
 
         private void readHeaders() throws IOException {
-            travelingSalesmanTour.setName(readStringValue("NAME :"));
-            readUntilConstantLine("TYPE : TSP");
-            cityListSize = readIntegerValue("DIMENSION :");
-            String edgeWeightType = readStringValue("EDGE_WEIGHT_TYPE :");
-            if (!edgeWeightType.equalsIgnoreCase("EUC_2D")) {
-                // Only Euclidean distance is implemented in City.getDistance(City)
-                throw new IllegalArgumentException("The edgeWeightType (" + edgeWeightType + ") is not supported.");
-            }
+            travelingSalesmanTour.setName(readStringValue("id,x,y"));
+            cityListSize = 150000;
         }
 
         private void readCityList() throws IOException {
-            readConstantLine("NODE_COORD_SECTION");
             List<City> cityList = new ArrayList<City>(cityListSize);
             for (int i = 0; i < cityListSize; i++) {
                 String line = bufferedReader.readLine();
-                String[] lineTokens = splitBySpace(line, 3, 4);
+                String[] lineTokens = splitBy(line, ",", ",", 3, 3, false, false);
                 City city = new City();
+                // 149945,3197,2073
                 city.setId(Long.parseLong(lineTokens[0]));
-                city.setLatitude(Double.parseDouble(lineTokens[1]));
-                city.setLongitude(Double.parseDouble(lineTokens[2]));
-                if (lineTokens.length >= 4) {
-                    city.setName(lineTokens[3]);
-                }
+                city.setLatitude(Integer.parseInt(lineTokens[2]));
+                city.setLongitude(Integer.parseInt(lineTokens[1]));
                 cityList.add(city);
             }
             travelingSalesmanTour.setCityList(cityList);

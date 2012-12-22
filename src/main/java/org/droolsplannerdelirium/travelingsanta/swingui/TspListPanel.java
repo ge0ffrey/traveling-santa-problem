@@ -61,6 +61,10 @@ public class TspListPanel extends JPanel {
             JLabel domicileLabel = new JLabel(domicile.getCity().getSafeName());
             add(domicileLabel);
         }
+        if (travelingSalesmanTour.getVisitList().size() > 1000) {
+            add(new JLabel("Data too big to show"));
+            return;
+        }
         for (Visit visit : travelingSalesmanTour.getVisitList()) {
             JPanel visitPanel = new JPanel(new GridLayout(1, 2));
             JButton button = new JButton(new VisitAction(visit));
