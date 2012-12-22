@@ -20,6 +20,7 @@ import org.drools.planner.core.score.buildin.hardmediumsoft.DefaultHardMediumSof
 import org.drools.planner.core.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.drools.planner.core.score.director.incremental.AbstractIncrementalScoreCalculator;
 import org.droolsplannerdelirium.travelingsanta.domain.Appearance;
+import org.droolsplannerdelirium.travelingsanta.domain.City;
 import org.droolsplannerdelirium.travelingsanta.domain.Domicile;
 import org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour;
 import org.droolsplannerdelirium.travelingsanta.domain.Visit;
@@ -79,19 +80,21 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
     }
 
     private void insert(Visit visit) {
+        City domicileCity = domicile.getCity();
+        int domicileToVisitDistance = domicileCity.getDistance(visit.getCity()); 
         Appearance previousOdd = visit.getPreviousOdd();
         if (previousOdd != null) {
             oddScore -= visit.getDistanceToPreviousOdd();
             // HACK: This counts too much, but the insert/retracts balance each other out
-            oddScore += domicile.getCity().getDistance(previousOdd.getCity());
-            oddScore -= domicile.getCity().getDistance(visit.getCity());
+            oddScore += domicileCity.getDistance(previousOdd.getCity());
+            oddScore -= domicileToVisitDistance;
         }
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore -= visit.getDistanceToPreviousEven();
             // HACK: This counts too much, but the insert/retracts balance each other out
-            evenScore += domicile.getCity().getDistance(previousEven.getCity());
-            evenScore -= domicile.getCity().getDistance(visit.getCity());
+            evenScore += domicileCity.getDistance(previousEven.getCity());
+            evenScore -= domicileToVisitDistance;
         }
         if (previousOdd != null) {
             if (previousOdd == previousEven) {
@@ -105,19 +108,21 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
     }
 
     private void retract(Visit visit) {
+        City domicileCity = domicile.getCity();
+        int domicileToVisitDistance = domicileCity.getDistance(visit.getCity()); 
         Appearance previousOdd = visit.getPreviousOdd();
         if (previousOdd != null) {
             oddScore += visit.getDistanceToPreviousOdd();
             // HACK: This counts too much, but the insert/retracts balance each other out
-            oddScore -= domicile.getCity().getDistance(previousOdd.getCity());
-            oddScore += domicile.getCity().getDistance(visit.getCity());
+            oddScore -= domicileCity.getDistance(previousOdd.getCity());
+            oddScore += domicileToVisitDistance;
         }
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore += visit.getDistanceToPreviousEven();
             // HACK: This counts too much, but the insert/retracts balance each other out
-            evenScore -= domicile.getCity().getDistance(previousEven.getCity());
-            evenScore += domicile.getCity().getDistance(visit.getCity());
+            evenScore -= domicileCity.getDistance(previousEven.getCity());
+            evenScore += domicileToVisitDistance;
         }
         if (previousOdd != null) {
             if (previousOdd == previousEven) {
