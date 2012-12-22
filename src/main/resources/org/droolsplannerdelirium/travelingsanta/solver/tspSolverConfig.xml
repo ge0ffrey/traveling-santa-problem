@@ -5,7 +5,7 @@
   <planningEntityClass>org.droolsplannerdelirium.travelingsanta.domain.Visit</planningEntityClass>
 
   <scoreDirectorFactory>
-    <scoreDefinitionType>HARD_AND_SOFT</scoreDefinitionType>
+    <scoreDefinitionType>HARD_MEDIUM_SOFT</scoreDefinitionType>
     <incrementalScoreCalculatorClass>org.droolsplannerdelirium.travelingsanta.solver.score.TspIncrementalScoreCalculator</incrementalScoreCalculatorClass>
   </scoreDirectorFactory>
 

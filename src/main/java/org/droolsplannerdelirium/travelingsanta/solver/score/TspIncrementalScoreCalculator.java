@@ -19,6 +19,8 @@ package org.droolsplannerdelirium.travelingsanta.solver.score;
 import org.drools.planner.core.score.buildin.hardandsoft.DefaultHardAndSoftScore;
 import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScore;
 import org.drools.planner.core.score.buildin.hardandsoftlong.DefaultHardAndSoftLongScore;
+import org.drools.planner.core.score.buildin.hardmediumsoft.DefaultHardMediumSoftScore;
+import org.drools.planner.core.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.drools.planner.core.score.buildin.simple.DefaultSimpleScore;
 import org.drools.planner.core.score.buildin.simple.SimpleScore;
 import org.drools.planner.core.score.director.incremental.AbstractIncrementalScoreCalculator;
@@ -31,6 +33,7 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
 
     private Domicile domicile;
 
+    private int hardScore;
     private int oddScore;
     private int evenScore;
 
@@ -40,6 +43,7 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
                     "The domicileList (" + tour.getDomicileList() + ") should be a singleton.");
         }
         domicile = tour.getDomicileList().get(0);
+        hardScore = 0;
         oddScore = 0;
         evenScore = 0;
         for (Visit visit : tour.getVisitList()) {
@@ -113,10 +117,10 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
         }
     }
 
-    public HardAndSoftScore calculateScore() {
-        int hardScore = Math.min(oddScore, evenScore);
+    public HardMediumSoftScore calculateScore() {
+        int mediumScore = Math.min(oddScore, evenScore);
         int softScore = Math.max(oddScore, evenScore);
-        return DefaultHardAndSoftScore.valueOf(hardScore, softScore);
+        return DefaultHardMediumSoftScore.valueOf(hardScore, mediumScore, softScore);
     }
 
 }
