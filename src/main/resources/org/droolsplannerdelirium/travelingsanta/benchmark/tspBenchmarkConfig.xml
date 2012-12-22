@@ -30,8 +30,9 @@
   <solverBenchmark>
     <name>tabuSearch</name>
     <solver>
+      <!-- TODO remove this and start from initialized solution -->
       <constructionHeuristic>
-        <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+        <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
       </constructionHeuristic>
       <localSearch>
         <unionMoveSelector>
