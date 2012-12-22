@@ -6,10 +6,9 @@
 
   <inheritedSolverBenchmark>
     <problemBenchmarks>
+      <!-- TODO replace xstreamAnnotatedClass with problemIO -->
       <xstreamAnnotatedClass>org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour</xstreamAnnotatedClass>
-      <inputSolutionFile>data/tsp/unsolved/dj38.xml</inputSolutionFile>
-      <inputSolutionFile>data/tsp/unsolved/europe40.xml</inputSolutionFile>
-      <inputSolutionFile>data/tsp/unsolved/lu980.xml</inputSolutionFile>
+      <inputSolutionFile>data/tsp/input/santa_cities.csv</inputSolutionFile>
       <problemStatisticType>BEST_SOLUTION_CHANGED</problemStatisticType>
     </problemBenchmarks>
 
@@ -18,9 +17,8 @@
       <planningEntityClass>org.droolsplannerdelirium.travelingsanta.domain.Visit</planningEntityClass>
 
       <scoreDirectorFactory>
-        <scoreDefinitionType>SIMPLE</scoreDefinitionType>
+        <scoreDefinitionType>HARD_AND_SOFT</scoreDefinitionType>
         <incrementalScoreCalculatorClass>org.droolsplannerdelirium.travelingsanta.solver.score.TspIncrementalScoreCalculator</incrementalScoreCalculatorClass>
-        <!--<scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>-->
       </scoreDirectorFactory>
 
       <termination>

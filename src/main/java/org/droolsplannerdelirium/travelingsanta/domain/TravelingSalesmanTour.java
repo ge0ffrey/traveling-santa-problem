@@ -25,6 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.drools.planner.api.domain.solution.PlanningEntityCollectionProperty;
 import org.drools.planner.api.domain.solution.PlanningSolution;
+import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScore;
 import org.drools.planner.core.score.buildin.simple.SimpleScore;
 import org.drools.planner.core.solution.Solution;
 import org.drools.planner.examples.common.domain.AbstractPersistable;
@@ -33,7 +34,7 @@ import org.droolsplannerdelirium.travelingsanta.domain.Visit;
 
 @PlanningSolution
 @XStreamAlias("TravelingSalesmanTour")
-public class TravelingSalesmanTour extends AbstractPersistable implements Solution<SimpleScore> {
+public class TravelingSalesmanTour extends AbstractPersistable implements Solution<HardAndSoftScore> {
 
     private String name;
     private List<City> cityList;
@@ -41,7 +42,7 @@ public class TravelingSalesmanTour extends AbstractPersistable implements Soluti
 
     private List<Visit> visitList;
 
-    private SimpleScore score;
+    private HardAndSoftScore score;
 
     public String getName() {
         return name;
@@ -76,11 +77,11 @@ public class TravelingSalesmanTour extends AbstractPersistable implements Soluti
         this.visitList = visitList;
     }
 
-    public SimpleScore getScore() {
+    public HardAndSoftScore getScore() {
         return score;
     }
 
-    public void setScore(SimpleScore score) {
+    public void setScore(HardAndSoftScore score) {
         this.score = score;
     }
 

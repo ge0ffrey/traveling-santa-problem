@@ -33,7 +33,6 @@ import org.droolsplannerdelirium.travelingsanta.domain.City;
 import org.droolsplannerdelirium.travelingsanta.domain.Domicile;
 import org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour;
 import org.droolsplannerdelirium.travelingsanta.domain.Visit;
-import org.droolsplannerdelirium.travelingsanta.swingui.TspPanel;
 
 /**
  * TODO this code is highly unoptimized
@@ -114,8 +113,8 @@ public class TspWorldPanel extends JPanel {
         }
         g.setColor(TangoColors.CHOCOLATE_1);
         for (Visit visit : travelingSalesmanTour.getVisitList()) {
-            if (visit.getPreviousAppearance() != null) {
-                City previousCity = visit.getPreviousAppearance().getCity();
+            if (visit.getPreviousOdd() != null) {
+                City previousCity = visit.getPreviousOdd().getCity();
                 int previousX = translator.translateLongitudeToX(previousCity.getLongitude());
                 int previousY = translator.translateLatitudeToY(previousCity.getLatitude());
                 City city = visit.getCity();
@@ -125,7 +124,7 @@ public class TspWorldPanel extends JPanel {
                 // Back to domicile line
                 boolean needsBackToDomicileLineDraw = true;
                 for (Visit trailingVisit : travelingSalesmanTour.getVisitList()) {
-                    if (trailingVisit.getPreviousAppearance() == visit) {
+                    if (trailingVisit.getPreviousOdd() == visit) {
                         needsBackToDomicileLineDraw = false;
                         break;
                     }

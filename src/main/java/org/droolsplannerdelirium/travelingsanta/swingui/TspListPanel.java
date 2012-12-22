@@ -32,7 +32,6 @@ import org.droolsplannerdelirium.travelingsanta.domain.Appearance;
 import org.droolsplannerdelirium.travelingsanta.domain.Domicile;
 import org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour;
 import org.droolsplannerdelirium.travelingsanta.domain.Visit;
-import org.droolsplannerdelirium.travelingsanta.swingui.TspPanel;
 
 /**
  * TODO this code is highly unoptimized
@@ -70,11 +69,11 @@ public class TspListPanel extends JPanel {
             JButton button = new JButton(new VisitAction(visit));
             visitPanel.add(button);
             String distanceLabelString;
-            if (visit.getPreviousAppearance() == null) {
+            if (visit.getPreviousOdd() == null) {
                 distanceLabelString = "Unassigned";
             } else {
-                distanceLabelString = "After " + visit.getPreviousAppearance().getCity().getSafeName()
-                        + " with distance " + visit.getDistanceToPreviousAppearance();
+                distanceLabelString = "After " + visit.getPreviousOdd().getCity().getSafeName()
+                        + " with distance " + visit.getDistanceToPreviousOdd();
             }
             visitPanel.add(new JLabel(distanceLabelString));
             add(visitPanel);
@@ -103,7 +102,7 @@ public class TspListPanel extends JPanel {
             for (Appearance previousAppearance : travelingSalesmanTour.getDomicileList()) {
                 previousAppearanceListField.addItem(previousAppearance);
             }
-            previousAppearanceListField.setSelectedItem(visit.getPreviousAppearance());
+            previousAppearanceListField.setSelectedItem(visit.getPreviousOdd());
             int result = JOptionPane.showConfirmDialog(TspListPanel.this.getRootPane(), previousAppearanceListField,
                     "Visit " + visit.getCity().getSafeName() + " after", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {

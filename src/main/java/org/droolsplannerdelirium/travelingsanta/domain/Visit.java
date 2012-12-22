@@ -25,8 +25,6 @@ import org.drools.planner.api.domain.variable.ValueRange;
 import org.drools.planner.api.domain.variable.ValueRangeType;
 import org.drools.planner.api.domain.variable.ValueRanges;
 import org.drools.planner.examples.common.domain.AbstractPersistable;
-import org.droolsplannerdelirium.travelingsanta.domain.Appearance;
-import org.droolsplannerdelirium.travelingsanta.domain.City;
 
 @PlanningEntity
 @XStreamAlias("Visit")
@@ -35,7 +33,8 @@ public class Visit extends AbstractPersistable implements Appearance {
     private City city; // the destinationCity
     
     // Planning variables: changes during planning, between score calculations.
-    private Appearance previousAppearance;
+    private Appearance previousOdd;
+    private Appearance previousEven;
 
     public City getCity() {
         return city;
@@ -50,23 +49,43 @@ public class Visit extends AbstractPersistable implements Appearance {
             @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "domicileList"),
             @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "visitList",
                     excludeUninitializedPlanningEntity = true)})
-    public Appearance getPreviousAppearance() {
-        return previousAppearance;
+    public Appearance getPreviousOdd() {
+        return previousOdd;
     }
 
-    public void setPreviousAppearance(Appearance previousAppearance) {
-        this.previousAppearance = previousAppearance;
+    public void setPreviousOdd(Appearance previousOdd) {
+        this.previousOdd = previousOdd;
+    }
+
+    @PlanningVariable(chained = true)
+    @ValueRanges({
+            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "domicileList"),
+            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "visitList",
+                    excludeUninitializedPlanningEntity = true)})
+    public Appearance getPreviousEven() {
+        return previousEven;
+    }
+
+    public void setPreviousEven(Appearance previousEven) {
+        this.previousEven = previousEven;
     }
 
     // ************************************************************************
     // Complex methods
     // ************************************************************************
 
-    public int getDistanceToPreviousAppearance() {
-        if (previousAppearance == null) {
+    public int getDistanceToPreviousOdd() {
+        if (previousOdd == null) {
             return 0;
         }
-        return getDistanceTo(previousAppearance);
+        return getDistanceTo(previousOdd);
+    }
+
+    public int getDistanceToPreviousEven() {
+        if (previousEven == null) {
+            return 0;
+        }
+        return getDistanceTo(previousEven);
     }
 
     public int getDistanceTo(Appearance appearance) {
@@ -86,7 +105,8 @@ public class Visit extends AbstractPersistable implements Appearance {
             return new EqualsBuilder()
                     .append(id, other.id)
                     .append(city, other.city) // TODO performance leak: not needed?
-                    .append(previousAppearance, other.previousAppearance) // TODO performance leak: not needed?
+                    .append(previousOdd, other.previousOdd) // TODO performance leak: not needed?
+                    .append(previousEven, other.previousEven) // TODO performance leak: not needed?
                     .isEquals();
         } else {
             return false;
@@ -102,13 +122,15 @@ public class Visit extends AbstractPersistable implements Appearance {
         return new HashCodeBuilder()
                 .append(id)
                 .append(city) // TODO performance leak: not needed?
-                .append(previousAppearance) // TODO performance leak: not needed?
+                .append(previousOdd) // TODO performance leak: not needed?
+                .append(previousEven) // TODO performance leak: not needed?
                 .toHashCode();
     }
 
     @Override
     public String toString() {
-        return city + "(after " + (previousAppearance == null ? "null" : previousAppearance.getCity()) + ")";
+        return city + "(odd after " + (previousOdd == null ? "null" : previousOdd.getCity())
+                + ", even after " + (previousEven == null ? "null" : previousEven.getCity()) + ")";
     }
 
 }

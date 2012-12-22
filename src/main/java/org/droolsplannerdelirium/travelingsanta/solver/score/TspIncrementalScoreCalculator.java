@@ -16,6 +16,9 @@
 
 package org.droolsplannerdelirium.travelingsanta.solver.score;
 
+import org.drools.planner.core.score.buildin.hardandsoft.DefaultHardAndSoftScore;
+import org.drools.planner.core.score.buildin.hardandsoft.HardAndSoftScore;
+import org.drools.planner.core.score.buildin.hardandsoftlong.DefaultHardAndSoftLongScore;
 import org.drools.planner.core.score.buildin.simple.DefaultSimpleScore;
 import org.drools.planner.core.score.buildin.simple.SimpleScore;
 import org.drools.planner.core.score.director.incremental.AbstractIncrementalScoreCalculator;
@@ -28,7 +31,8 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
 
     private Domicile domicile;
 
-    private int score;
+    private int oddScore;
+    private int evenScore;
 
     public void resetWorkingSolution(TravelingSalesmanTour tour) {
         if (tour.getDomicileList().size() != 1) {
@@ -36,7 +40,8 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
                     "The domicileList (" + tour.getDomicileList() + ") should be a singleton.");
         }
         domicile = tour.getDomicileList().get(0);
-        score = 0;
+        oddScore = 0;
+        evenScore = 0;
         for (Visit visit : tour.getVisitList()) {
             insert(visit);
         }
@@ -75,27 +80,43 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
     }
 
     private void insert(Visit visit) {
-        Appearance previousAppearance = visit.getPreviousAppearance();
-        if (previousAppearance != null) {
-            score -= visit.getDistanceToPreviousAppearance();
+        Appearance previousOdd = visit.getPreviousOdd();
+        if (previousOdd != null) {
+            oddScore -= visit.getDistanceToPreviousOdd();
             // HACK: This counts too much, but the insert/retracts balance each other out
-            score += domicile.getCity().getDistance(previousAppearance.getCity());
-            score -= domicile.getCity().getDistance(visit.getCity());
+            oddScore += domicile.getCity().getDistance(previousOdd.getCity());
+            oddScore -= domicile.getCity().getDistance(visit.getCity());
+        }
+        Appearance previousEven = visit.getPreviousEven();
+        if (previousEven != null) {
+            evenScore -= visit.getDistanceToPreviousEven();
+            // HACK: This counts too much, but the insert/retracts balance each other out
+            evenScore += domicile.getCity().getDistance(previousEven.getCity());
+            evenScore -= domicile.getCity().getDistance(visit.getCity());
         }
     }
 
     private void retract(Visit visit) {
-        Appearance previousAppearance = visit.getPreviousAppearance();
-        if (previousAppearance != null) {
-            score += visit.getDistanceToPreviousAppearance();
+        Appearance previousOdd = visit.getPreviousOdd();
+        if (previousOdd != null) {
+            oddScore += visit.getDistanceToPreviousOdd();
             // HACK: This counts too much, but the insert/retracts balance each other out
-            score -= domicile.getCity().getDistance(previousAppearance.getCity());
-            score += domicile.getCity().getDistance(visit.getCity());
+            oddScore -= domicile.getCity().getDistance(previousOdd.getCity());
+            oddScore += domicile.getCity().getDistance(visit.getCity());
+        }
+        Appearance previousEven = visit.getPreviousEven();
+        if (previousEven != null) {
+            evenScore += visit.getDistanceToPreviousEven();
+            // HACK: This counts too much, but the insert/retracts balance each other out
+            evenScore -= domicile.getCity().getDistance(previousEven.getCity());
+            evenScore += domicile.getCity().getDistance(visit.getCity());
         }
     }
 
-    public SimpleScore calculateScore() {
-        return DefaultSimpleScore.valueOf(score);
+    public HardAndSoftScore calculateScore() {
+        int hardScore = Math.min(oddScore, evenScore);
+        int softScore = Math.max(oddScore, evenScore);
+        return DefaultHardAndSoftScore.valueOf(hardScore, softScore);
     }
 
 }

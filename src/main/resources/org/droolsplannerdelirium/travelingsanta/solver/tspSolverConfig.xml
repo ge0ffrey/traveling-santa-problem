@@ -5,16 +5,12 @@
   <planningEntityClass>org.droolsplannerdelirium.travelingsanta.domain.Visit</planningEntityClass>
 
   <scoreDirectorFactory>
-    <scoreDefinitionType>SIMPLE</scoreDefinitionType>
+    <scoreDefinitionType>HARD_AND_SOFT</scoreDefinitionType>
     <incrementalScoreCalculatorClass>org.droolsplannerdelirium.travelingsanta.solver.score.TspIncrementalScoreCalculator</incrementalScoreCalculatorClass>
-    <!--<scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>-->
-    <!--<assertionScoreDirectorFactory>-->
-      <!--<scoreDrl>/org/droolsplannerdelirium/travelingsanta/solver/tspScoreRules.drl</scoreDrl>-->
-    <!--</assertionScoreDirectorFactory>-->
   </scoreDirectorFactory>
 
   <termination>
-    <maximumMinutesSpend>2</maximumMinutesSpend>
+    <!--<maximumMinutesSpend>2</maximumMinutesSpend>-->
   </termination>
   <constructionHeuristic>
     <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
@@ -22,12 +18,16 @@
   <localSearch>
     <unionMoveSelector>
       <changeMoveSelector>
-        <cacheType>PHASE</cacheType>
-        <selectionOrder>SHUFFLED</selectionOrder>
+        <valueSelector>
+          <planningVariableName>previousOdd</planningVariableName>
+        </valueSelector>
+      </changeMoveSelector>
+      <changeMoveSelector>
+        <valueSelector>
+          <planningVariableName>previousEven</planningVariableName>
+        </valueSelector>
       </changeMoveSelector>
       <swapMoveSelector>
-        <cacheType>PHASE</cacheType>
-        <selectionOrder>SHUFFLED</selectionOrder>
       </swapMoveSelector>
       <!--<subChainChangeMoveSelector>-->
         <!--<selectReversingMoveToo>false</selectReversingMoveToo>-->
