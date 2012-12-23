@@ -62,7 +62,7 @@ public class TspPanel extends SolutionPanel {
 
     @Override
     public boolean isRefreshScreenDuringSolving() {
-        return true;
+        return false;
     }
 
     public TravelingSalesmanTour getTravelingSalesmanTour() {
