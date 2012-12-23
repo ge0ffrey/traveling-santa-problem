@@ -60,6 +60,9 @@ public class City extends AbstractPersistable {
      * @return a positive number
      */
     public int getDistance(org.droolsplannerdelirium.travelingsanta.domain.City city) {
+        if (city == this) {
+            return 0;
+        }
         // Implementation specified by TSPLIB http://www2.iwr.uni-heidelberg.de/groups/comopt/software/TSPLIB95/
         // Euclidean distance (Pythagorean theorem) - not correct when the surface is a sphere
         double latitudeDifference = city.latitude - latitude;
