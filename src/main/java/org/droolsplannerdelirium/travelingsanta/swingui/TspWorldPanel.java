@@ -98,7 +98,7 @@ public class TspWorldPanel extends JPanel {
             City city = visit.getCity();
             int x = translator.translateLongitudeToX(city.getLongitude());
             int y = translator.translateLatitudeToY(city.getLatitude());
-            g.fillRect(x - 1, y - 1, 3, 3);
+            g.fillRect(x, y, 1, 1);
             if (city.getName() != null) {
                 g.drawString(city.getName(), x + 3, y - 3);
             }
