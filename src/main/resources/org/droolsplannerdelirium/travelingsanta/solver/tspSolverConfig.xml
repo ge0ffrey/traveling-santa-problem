@@ -13,7 +13,30 @@
     <!--<maximumMinutesSpend>2</maximumMinutesSpend>-->
   </termination>
   <constructionHeuristic>
-    <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
+    <queuedEntityPlacer>
+      <entitySelector>
+        <cacheType>PHASE</cacheType>
+      </entitySelector>
+      <valuePlacer>
+        <valueSelector>
+          <planningVariableName>previousOdd</planningVariableName>
+        </valueSelector>
+        <selectedCountLimit>2</selectedCountLimit>
+      </valuePlacer>
+    </queuedEntityPlacer>
+  </constructionHeuristic>
+  <constructionHeuristic>
+    <queuedEntityPlacer>
+      <entitySelector>
+        <cacheType>PHASE</cacheType>
+      </entitySelector>
+      <valuePlacer>
+        <valueSelector>
+          <planningVariableName>previousEven</planningVariableName>
+        </valueSelector>
+        <selectedCountLimit>2</selectedCountLimit>
+      </valuePlacer>
+    </queuedEntityPlacer>
   </constructionHeuristic>
   <localSearch>
     <unionMoveSelector>
@@ -41,7 +64,7 @@
       <planningEntityTabuSize>7</planningEntityTabuSize>
     </acceptor>
     <forager>
-      <minimalAcceptedSelection>10000</minimalAcceptedSelection>
+      <minimalAcceptedSelection>1000</minimalAcceptedSelection>
     </forager>
   </localSearch>
 </solver>
