@@ -32,6 +32,7 @@ import org.droolsplannerdelirium.travelingsanta.domain.solver.VisitDifficultyCom
 public class Visit extends AbstractPersistable implements Appearance {
 
     private City city; // the destinationCity
+    private boolean lastInTour = false;
     
     // Planning variables: changes during planning, between score calculations.
     private Appearance previousOdd;
@@ -43,6 +44,14 @@ public class Visit extends AbstractPersistable implements Appearance {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public boolean isLastInTour() {
+        return lastInTour;
+    }
+
+    public void setLastInTour(boolean lastInTour) {
+        this.lastInTour = lastInTour;
     }
 
     @PlanningVariable(chained = true)

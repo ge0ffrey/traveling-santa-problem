@@ -25,4 +25,6 @@ public interface Appearance {
      */
     City getCity();
 
+    boolean isLastInTour();
+
 }

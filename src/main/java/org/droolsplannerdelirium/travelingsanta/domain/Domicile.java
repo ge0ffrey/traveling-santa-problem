@@ -34,6 +34,11 @@ public class Domicile extends AbstractPersistable implements Appearance {
         this.city = city;
     }
 
+    @Override
+    public boolean isLastInTour() {
+        return false;
+    }
+
     // ************************************************************************
     // Complex methods
     // ************************************************************************

@@ -27,18 +27,11 @@ import org.droolsplannerdelirium.travelingsanta.domain.Visit;
 
 public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalculator<TravelingSalesmanTour> {
 
-    private Domicile domicile;
-
     private int hardScore;
     private int oddScore;
     private int evenScore;
 
     public void resetWorkingSolution(TravelingSalesmanTour tour) {
-        if (tour.getDomicileList().size() != 1) {
-            throw new UnsupportedOperationException(
-                    "The domicileList (" + tour.getDomicileList() + ") should be a singleton.");
-        }
-        domicile = tour.getDomicileList().get(0);
         hardScore = 0;
         oddScore = 0;
         evenScore = 0;
@@ -80,62 +73,52 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
     }
 
     private void insert(Visit visit) {
-        City domicileCity = domicile.getCity();
-        int domicileToVisitDistance = domicileCity.getDistance(visit.getCity());
-        // process one path
+        Appearance previousOdd = visit.getPreviousOdd();
+        if (previousOdd != null) {
+            oddScore -= visit.getDistanceToPreviousOdd();
+            if (previousOdd.isLastInTour()) {
+                hardScore -= 1000;
+            }
+        }
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore -= visit.getDistanceToPreviousEven();
-            // HACK: This counts too much, but the insert/retracts balance each other out
-            evenScore += domicileCity.getDistance(previousEven.getCity());
-            evenScore -= domicileToVisitDistance;
-        }
-        // process the other path
-        Appearance previousOdd = visit.getPreviousOdd();
-        if (previousOdd == null) {
-            return;
-        }
-        oddScore -= visit.getDistanceToPreviousOdd();
-        // HACK: This counts too much, but the insert/retracts balance each other out
-        oddScore += domicileCity.getDistance(previousOdd.getCity());
-        oddScore -= domicileToVisitDistance;
-        // reflect the number of disjoint paths
-        if (previousOdd == previousEven) {
-            hardScore--;
-        }
-        if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
-            hardScore--;
-            // TODO bug: domicilie.getPreviousEven() might be == visit
+            if (previousEven.isLastInTour()) {
+                hardScore -= 1000;
+            }
+            // Do not share edges
+            if (previousOdd == previousEven) {
+                hardScore--;
+            }
+            // Do not share reverse edges
+            if (previousEven instanceof Visit && ((Visit) previousEven).getPreviousOdd() == visit) {
+                hardScore--;
+            }
         }
     }
 
     private void retract(Visit visit) {
-        City domicileCity = domicile.getCity();
-        int domicileToVisitDistance = domicileCity.getDistance(visit.getCity()); 
-        // process one path
+        Appearance previousOdd = visit.getPreviousOdd();
+        if (previousOdd != null) {
+            oddScore += visit.getDistanceToPreviousOdd();
+            if (previousOdd.isLastInTour()) {
+                hardScore += 1000;
+            }
+        }
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore += visit.getDistanceToPreviousEven();
-            // HACK: This counts too much, but the insert/retracts balance each other out
-            evenScore -= domicileCity.getDistance(previousEven.getCity());
-            evenScore += domicileToVisitDistance;
-        }
-        // process the other path
-        Appearance previousOdd = visit.getPreviousOdd();
-        if (previousOdd == null) {
-            return;
-        }
-        oddScore += visit.getDistanceToPreviousOdd();
-        // HACK: This counts too much, but the insert/retracts balance each other out
-        oddScore -= domicileCity.getDistance(previousOdd.getCity());
-        oddScore += domicileToVisitDistance;
-        // reflect the number of disjoint paths
-        if (previousOdd == previousEven) {
-            hardScore++;
-        }
-        if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
-            hardScore++;
-            // TODO bug: domicilie.getPreviousEven() might be == visit
+            if (previousEven.isLastInTour()) {
+                hardScore += 1000;
+            }
+            // Do not share edges
+            if (previousOdd == previousEven) {
+                hardScore++;
+            }
+            // Do not share reverse edges
+            if (previousEven instanceof Visit && ((Visit) previousEven).getPreviousOdd() == visit) {
+                hardScore++;
+            }
         }
     }
 

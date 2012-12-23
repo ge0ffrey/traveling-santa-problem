@@ -113,12 +113,6 @@ public class TspWorldPanel extends JPanel {
                 g.drawString(city.getName(), x + 3, y - 3);
             }
         }
-        Set<Visit> needsBackToDomicileLineSet = new HashSet<Visit>(travelingSalesmanTour.getVisitList());
-        for (Visit trailingVisit : travelingSalesmanTour.getVisitList()) {
-            if (trailingVisit.getPreviousOdd() instanceof org.drools.planner.examples.tsp.domain.Visit) {
-                needsBackToDomicileLineSet.remove(trailingVisit.getPreviousOdd());
-            }
-        }
         g.setColor(TangoColors.CHOCOLATE_1);
         for (Visit visit : travelingSalesmanTour.getVisitList()) {
             if (visit.getPreviousOdd() != null) {
@@ -129,15 +123,6 @@ public class TspWorldPanel extends JPanel {
                 int x = translator.translateLongitudeToX(city.getLongitude());
                 int y = translator.translateLatitudeToY(city.getLatitude());
                 g.drawLine(previousX, previousY, x, y);
-                // Back to domicile line
-                if (needsBackToDomicileLineSet.contains(visit)) {
-                    // TODO support more than 1 domicile
-                    Domicile domicile = travelingSalesmanTour.getDomicileList().get(0);
-                    City domicileCity = domicile.getCity();
-                    int domicileX = translator.translateLongitudeToX(domicileCity.getLongitude());
-                    int domicileY = translator.translateLatitudeToY(domicileCity.getLatitude());
-                    g.drawLine(x, y,domicileX, domicileY);
-                }
             }
         }
         // Legend
