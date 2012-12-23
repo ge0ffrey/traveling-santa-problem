@@ -81,14 +81,8 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
 
     private void insert(Visit visit) {
         City domicileCity = domicile.getCity();
-        int domicileToVisitDistance = domicileCity.getDistance(visit.getCity()); 
-        Appearance previousOdd = visit.getPreviousOdd();
-        if (previousOdd != null) {
-            oddScore -= visit.getDistanceToPreviousOdd();
-            // HACK: This counts too much, but the insert/retracts balance each other out
-            oddScore += domicileCity.getDistance(previousOdd.getCity());
-            oddScore -= domicileToVisitDistance;
-        }
+        int domicileToVisitDistance = domicileCity.getDistance(visit.getCity());
+        // process one path
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore -= visit.getDistanceToPreviousEven();
@@ -96,27 +90,29 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
             evenScore += domicileCity.getDistance(previousEven.getCity());
             evenScore -= domicileToVisitDistance;
         }
-        if (previousOdd != null) {
-            if (previousOdd == previousEven) {
-                hardScore--;
-            }
-            if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
-                hardScore--;
-                // TODO bug: domicilie.getPreviousEven() might be == visit
-            }
+        // process the other path
+        Appearance previousOdd = visit.getPreviousOdd();
+        if (previousOdd == null) {
+            return;
+        }
+        oddScore -= visit.getDistanceToPreviousOdd();
+        // HACK: This counts too much, but the insert/retracts balance each other out
+        oddScore += domicileCity.getDistance(previousOdd.getCity());
+        oddScore -= domicileToVisitDistance;
+        // reflect the number of disjoint paths
+        if (previousOdd == previousEven) {
+            hardScore--;
+        }
+        if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
+            hardScore--;
+            // TODO bug: domicilie.getPreviousEven() might be == visit
         }
     }
 
     private void retract(Visit visit) {
         City domicileCity = domicile.getCity();
         int domicileToVisitDistance = domicileCity.getDistance(visit.getCity()); 
-        Appearance previousOdd = visit.getPreviousOdd();
-        if (previousOdd != null) {
-            oddScore += visit.getDistanceToPreviousOdd();
-            // HACK: This counts too much, but the insert/retracts balance each other out
-            oddScore -= domicileCity.getDistance(previousOdd.getCity());
-            oddScore += domicileToVisitDistance;
-        }
+        // process one path
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore += visit.getDistanceToPreviousEven();
@@ -124,14 +120,22 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
             evenScore -= domicileCity.getDistance(previousEven.getCity());
             evenScore += domicileToVisitDistance;
         }
-        if (previousOdd != null) {
-            if (previousOdd == previousEven) {
-                hardScore++;
-            }
-            if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
-                hardScore++;
-                // TODO bug: domicilie.getPreviousEven() might be == visit
-            }
+        // process the other path
+        Appearance previousOdd = visit.getPreviousOdd();
+        if (previousOdd == null) {
+            return;
+        }
+        oddScore += visit.getDistanceToPreviousOdd();
+        // HACK: This counts too much, but the insert/retracts balance each other out
+        oddScore -= domicileCity.getDistance(previousOdd.getCity());
+        oddScore += domicileToVisitDistance;
+        // reflect the number of disjoint paths
+        if (previousOdd == previousEven) {
+            hardScore++;
+        }
+        if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
+            hardScore++;
+            // TODO bug: domicilie.getPreviousEven() might be == visit
         }
     }
 
