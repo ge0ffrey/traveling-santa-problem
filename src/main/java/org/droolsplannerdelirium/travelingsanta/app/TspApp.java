@@ -19,10 +19,12 @@ package org.droolsplannerdelirium.travelingsanta.app;
 import org.drools.planner.config.XmlSolverFactory;
 import org.drools.planner.core.Solver;
 import org.drools.planner.examples.common.app.CommonApp;
+import org.drools.planner.examples.common.persistence.AbstractSolutionExporter;
 import org.drools.planner.examples.common.persistence.AbstractSolutionImporter;
 import org.drools.planner.examples.common.persistence.SolutionDao;
 import org.drools.planner.examples.common.swingui.SolutionPanel;
 import org.droolsplannerdelirium.travelingsanta.persistence.TspDaoImpl;
+import org.droolsplannerdelirium.travelingsanta.persistence.TspSolutionExporter;
 import org.droolsplannerdelirium.travelingsanta.persistence.TspSolutionImporter;
 import org.droolsplannerdelirium.travelingsanta.swingui.TspPanel;
 
@@ -56,6 +58,11 @@ public class TspApp extends CommonApp {
     @Override
     protected AbstractSolutionImporter createSolutionImporter() {
         return new TspSolutionImporter();
+    }
+
+    @Override
+    protected AbstractSolutionExporter createSolutionExporter() {
+        return new TspSolutionExporter();
     }
 
 }

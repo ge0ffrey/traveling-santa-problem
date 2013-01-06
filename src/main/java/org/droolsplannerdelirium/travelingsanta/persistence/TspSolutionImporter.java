@@ -103,6 +103,7 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
                     Visit lastInTourVisit = new Visit();
                     lastInTourVisit.setId((long) cityList.size());
                     lastInTourVisit.setCity(domicile.getCity());
+                    lastInTourVisit.setLastInTour(true);
                     lastInTourVisit.setPreviousOdd(domicile); // Already initialize it
                     lastInTourVisit.setPreviousEven(domicile); // Already initialize it
                     visitList.add(lastInTourVisit);
