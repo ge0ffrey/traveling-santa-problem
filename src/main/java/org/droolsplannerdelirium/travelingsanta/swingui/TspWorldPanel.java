@@ -103,20 +103,10 @@ public class TspWorldPanel extends JPanel {
                 g.drawString(city.getName(), x + 3, y - 3);
             }
         }
-        g.setColor(TangoColors.ALUMINIUM_4);
-        for (Domicile domicile : travelingSalesmanTour.getDomicileList()) {
-            City city = domicile.getCity();
-            int x = translator.translateLongitudeToX(city.getLongitude());
-            int y = translator.translateLatitudeToY(city.getLatitude());
-            g.fillRect(x - 2, y - 2, 5, 5);
-            if (city.getName() != null) {
-                g.drawString(city.getName(), x + 3, y - 3);
-            }
-        }
         g.setColor(TangoColors.CHOCOLATE_1);
         for (Visit visit : travelingSalesmanTour.getVisitList()) {
-            if (visit.getPreviousOdd() != null) {
-                City previousCity = visit.getPreviousOdd().getCity();
+            if (visit.getPreviousOdd() != null && visit.getPreviousOdd() instanceof Visit) {
+                City previousCity = ((Visit) visit.getPreviousOdd()).getCity();
                 int previousX = translator.translateLongitudeToX(previousCity.getLongitude());
                 int previousY = translator.translateLatitudeToY(previousCity.getLatitude());
                 City city = visit.getCity();

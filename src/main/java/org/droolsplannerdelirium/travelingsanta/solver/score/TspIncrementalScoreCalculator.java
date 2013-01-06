@@ -76,16 +76,10 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
         Appearance previousOdd = visit.getPreviousOdd();
         if (previousOdd != null) {
             oddScore -= visit.getDistanceToPreviousOdd();
-            if (previousOdd.isLastInTour()) {
-                hardScore -= 1000;
-            }
         }
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore -= visit.getDistanceToPreviousEven();
-            if (previousEven.isLastInTour()) {
-                hardScore -= 1000;
-            }
             // Do not share edges
             if (previousOdd == previousEven) {
                 hardScore--;
@@ -101,16 +95,10 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
         Appearance previousOdd = visit.getPreviousOdd();
         if (previousOdd != null) {
             oddScore += visit.getDistanceToPreviousOdd();
-            if (previousOdd.isLastInTour()) {
-                hardScore += 1000;
-            }
         }
         Appearance previousEven = visit.getPreviousEven();
         if (previousEven != null) {
             evenScore += visit.getDistanceToPreviousEven();
-            if (previousEven.isLastInTour()) {
-                hardScore += 1000;
-            }
             // Do not share edges
             if (previousOdd == previousEven) {
                 hardScore++;

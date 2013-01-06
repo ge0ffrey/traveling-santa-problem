@@ -32,7 +32,6 @@ import org.droolsplannerdelirium.travelingsanta.domain.solver.VisitDifficultyCom
 public class Visit extends AbstractPersistable implements Appearance {
 
     private City city; // the destinationCity
-    private boolean lastInTour = false;
     
     // Planning variables: changes during planning, between score calculations.
     private Appearance previousOdd;
@@ -44,14 +43,6 @@ public class Visit extends AbstractPersistable implements Appearance {
 
     public void setCity(City city) {
         this.city = city;
-    }
-
-    public boolean isLastInTour() {
-        return lastInTour;
-    }
-
-    public void setLastInTour(boolean lastInTour) {
-        this.lastInTour = lastInTour;
     }
 
     @PlanningVariable(chained = true)
@@ -67,11 +58,11 @@ public class Visit extends AbstractPersistable implements Appearance {
         this.previousOdd = previousOdd;
     }
 
-    @PlanningVariable(chained = true)
-    @ValueRanges({
-            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "domicileList"),
-            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "visitList",
-                    excludeUninitializedPlanningEntity = true)})
+//    @PlanningVariable(chained = true)
+//    @ValueRanges({
+//            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "domicileList"),
+//            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "visitList",
+//                    excludeUninitializedPlanningEntity = true)})
     public Appearance getPreviousEven() {
         return previousEven;
     }
@@ -99,7 +90,10 @@ public class Visit extends AbstractPersistable implements Appearance {
     }
 
     public int getDistanceTo(Appearance appearance) {
-        return city.getDistance(appearance.getCity());
+        if (appearance instanceof Visit) {
+            return city.getDistance(((Visit)appearance).getCity());
+        }
+        return 0;
     }
 
     /**
@@ -139,8 +133,8 @@ public class Visit extends AbstractPersistable implements Appearance {
 
     @Override
     public String toString() {
-        return city + "(odd after " + (previousOdd == null ? "null" : previousOdd.getCity())
-                + ", even after " + (previousEven == null ? "null" : previousEven.getCity()) + ")";
+        return city + "(odd after " + (previousOdd == null ? "null" : previousOdd instanceof Visit ? ((Visit) previousOdd).getCity() : "domicile")
+                + ", even after " + (previousEven == null ? "null" : previousEven instanceof Visit ? ((Visit) previousEven).getCity() : "domicile") + ")";
     }
 
 }

@@ -89,11 +89,7 @@ public class TravelingSalesmanTour extends AbstractPersistable implements Soluti
     // ************************************************************************
 
     public Collection<? extends Object> getProblemFacts() {
-        List<Object> facts = new ArrayList<Object>();
-        facts.addAll(cityList);
-        facts.addAll(domicileList);
-        // Do not add the planning entity's (visitList) because that will be done automatically
-        return facts;
+        throw new UnsupportedOperationException();
     }
 
     public boolean equals(Object o) {

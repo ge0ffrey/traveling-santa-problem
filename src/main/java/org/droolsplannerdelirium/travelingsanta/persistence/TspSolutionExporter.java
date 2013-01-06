@@ -59,13 +59,6 @@ public class TspSolutionExporter extends AbstractTxtSolutionExporter {
                 throw new IllegalStateException();
             }
             Domicile domicile = domicileList.get(0);
-            if (domicile.getCity().getId() != 0L) {
-                throw new IllegalStateException("The domicile (" + domicile + ") should has the wrong id ("
-                        + domicile.getCity().getId() + ").");
-            }
-            bufferedWriter.write("0,0");
-            bufferedWriter.newLine();
-
             List<Visit> visitList = travelingSalesmanTour.getVisitList();
             Map<Appearance, Visit> oddMap = new HashMap<Appearance, Visit>(visitList.size());
             Map<Appearance, Visit> evenMap = new HashMap<Appearance, Visit>(visitList.size());
@@ -75,11 +68,8 @@ public class TspSolutionExporter extends AbstractTxtSolutionExporter {
             }
             Map<Visit, Integer> oddIndexMap = buildIndexMap(domicile, visitList, oddMap);
             Map<Visit, Integer> evenIndexMap = buildIndexMap(domicile, visitList, evenMap);
-            int count = 1; // already domicile
+            int count = 0;
             for (Visit visit : visitList) {
-                if (visit.isLastInTour()) {
-                    continue;
-                }
                 Integer oddIndex = oddIndexMap.get(visit);
                 Integer evenIndex = evenIndexMap.get(visit);
                 if (oddIndex == null || evenIndex == null) {

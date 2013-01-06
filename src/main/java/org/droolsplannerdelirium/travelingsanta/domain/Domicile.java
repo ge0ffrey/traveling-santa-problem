@@ -24,28 +24,13 @@ import org.droolsplannerdelirium.travelingsanta.domain.City;
 @XStreamAlias("Domicile")
 public class Domicile extends AbstractPersistable implements Appearance {
 
-    private City city;
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
-    @Override
-    public boolean isLastInTour() {
-        return false;
-    }
-
     // ************************************************************************
     // Complex methods
     // ************************************************************************
 
     @Override
     public String toString() {
-        return city.toString();
+        return "domicile";
     }
 
 }

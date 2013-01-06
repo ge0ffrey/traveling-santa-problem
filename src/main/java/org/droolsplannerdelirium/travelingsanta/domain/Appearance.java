@@ -20,11 +20,4 @@ import org.droolsplannerdelirium.travelingsanta.domain.City;
 
 public interface Appearance {
 
-    /**
-     * @return never null
-     */
-    City getCity();
-
-    boolean isLastInTour();
-
 }

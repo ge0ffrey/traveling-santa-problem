@@ -91,29 +91,16 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
             int domicileListSize = 1;
             List<Domicile> domicileList = new ArrayList<Domicile>(domicileListSize);
             List<Visit> visitList = new ArrayList<Visit>(cityList.size());
-            Domicile domicile = null;
+            Domicile domicile = new Domicile();
+            domicile.setId(-1L);
+            domicileList.add(domicile);
             int count = 0;
             for (City city : cityList) {
-                if (count < domicileListSize) {
-                    domicile = new Domicile();
-                    domicile.setId(city.getId());
-                    domicile.setCity(city);
-                    domicileList.add(domicile);
-                    // Visit.lastInTour trick
-                    Visit lastInTourVisit = new Visit();
-                    lastInTourVisit.setId((long) cityList.size());
-                    lastInTourVisit.setCity(domicile.getCity());
-                    lastInTourVisit.setLastInTour(true);
-                    lastInTourVisit.setPreviousOdd(domicile); // Already initialize it
-                    lastInTourVisit.setPreviousEven(domicile); // Already initialize it
-                    visitList.add(lastInTourVisit);
-                } else {
-                    Visit visit = new Visit();
-                    visit.setId(city.getId());
-                    visit.setCity(city);
-                    // Notice that we leave the PlanningVariable properties on null
-                    visitList.add(visit);
-                }
+                Visit visit = new Visit();
+                visit.setId(city.getId());
+                visit.setCity(city);
+                // Notice that we leave the PlanningVariable properties on null
+                visitList.add(visit);
                 count++;
             }
             travelingSalesmanTour.setDomicileList(domicileList);
