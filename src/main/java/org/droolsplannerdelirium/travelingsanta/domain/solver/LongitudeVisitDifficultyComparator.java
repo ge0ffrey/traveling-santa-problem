@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 JBoss Inc
+ * Copyright 2013 JBoss Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ import java.util.Comparator;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.droolsplannerdelirium.travelingsanta.domain.Visit;
 
-public class VisitDifficultyComparator implements Comparator<Visit>, Serializable {
+public class LongitudeVisitDifficultyComparator implements Comparator<Visit>, Serializable {
 
     public int compare(Visit a, Visit b) {
         return new CompareToBuilder()
-                // TODO experiment with (aLatitude - bLatitude) % 10
-                .append(a.getCity().getLatitude(), b.getCity().getLatitude())
+                // TODO experiment with (aLongitude - bLongitude) % 10
                 .append(a.getCity().getLongitude(), b.getCity().getLongitude())
+                .append(a.getCity().getLatitude(), b.getCity().getLatitude())
                 .append(a.getId(), b.getId())
                 .toComparison();
     }

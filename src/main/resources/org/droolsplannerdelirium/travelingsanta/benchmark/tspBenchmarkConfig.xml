@@ -6,9 +6,12 @@
 
   <inheritedSolverBenchmark>
     <problemBenchmarks>
-      <!-- TODO replace xstreamAnnotatedClass with problemIO -->
-      <xstreamAnnotatedClass>org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour</xstreamAnnotatedClass>
-      <inputSolutionFile>data/tsp/input/santa_cities.csv</inputSolutionFile>
+      <problemIOClass>org.droolsplannerdelirium.travelingsanta.persistence.TspProblemIO</problemIOClass>
+      <inputSolutionFile>data/tsp/input/santa10.csv</inputSolutionFile>
+      <inputSolutionFile>data/tsp/input/santa100.csv</inputSolutionFile>
+      <inputSolutionFile>data/tsp/input/santa1000.csv</inputSolutionFile>
+      <!--<inputSolutionFile>data/tsp/input/santa_cities.csv</inputSolutionFile>-->
+      <writeOutputSolutionEnabled>true</writeOutputSolutionEnabled>
       <problemStatisticType>BEST_SOLUTION_CHANGED</problemStatisticType>
     </problemBenchmarks>
 
@@ -22,37 +25,100 @@
       </scoreDirectorFactory>
 
       <termination>
-        <maximumMinutesSpend>5</maximumMinutesSpend>
+        <maximumHoursSpend>2</maximumHoursSpend>
       </termination>
     </solver>
   </inheritedSolverBenchmark>
 
   <solverBenchmark>
-    <name>tabuSearch</name>
+    <name>FF</name>
     <solver>
-      <!-- TODO remove this and start from initialized solution -->
       <constructionHeuristic>
-        <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
+        <queuedEntityPlacer>
+          <entitySelector>
+            <cacheType>PHASE</cacheType>
+          </entitySelector>
+          <valuePlacer>
+            <valueSelector>
+              <planningVariableName>previousOdd</planningVariableName>
+            </valueSelector>
+          </valuePlacer>
+        </queuedEntityPlacer>
       </constructionHeuristic>
-      <localSearch>
-        <unionMoveSelector>
-          <changeMoveSelector>
+      <constructionHeuristic>
+        <queuedEntityPlacer>
+          <entitySelector>
             <cacheType>PHASE</cacheType>
-            <selectionOrder>SHUFFLED</selectionOrder>
-          </changeMoveSelector>
-          <swapMoveSelector>
+          </entitySelector>
+          <valuePlacer>
+            <valueSelector>
+              <planningVariableName>previousEven</planningVariableName>
+            </valueSelector>
+          </valuePlacer>
+        </queuedEntityPlacer>
+      </constructionHeuristic>
+    </solver>
+  </solverBenchmark>
+  <solverBenchmark>
+    <name>FFD-lat-long</name>
+    <solver>
+      <constructionHeuristic>
+        <queuedEntityPlacer>
+          <entitySelector>
             <cacheType>PHASE</cacheType>
-            <selectionOrder>SHUFFLED</selectionOrder>
-          </swapMoveSelector>
-        </unionMoveSelector>
-        <acceptor>
-          <solutionTabuSize>1000</solutionTabuSize>
-          <planningEntityTabuSize>7</planningEntityTabuSize>
-        </acceptor>
-        <forager>
-          <minimalAcceptedSelection>10000</minimalAcceptedSelection>
-        </forager>
-      </localSearch>
+            <entityComparatorClass>org.droolsplannerdelirium.travelingsanta.domain.solver.LatitudeVisitDifficultyComparator</entityComparatorClass>
+          </entitySelector>
+          <valuePlacer>
+            <valueSelector>
+              <planningVariableName>previousOdd</planningVariableName>
+            </valueSelector>
+          </valuePlacer>
+        </queuedEntityPlacer>
+      </constructionHeuristic>
+      <constructionHeuristic>
+        <queuedEntityPlacer>
+          <entitySelector>
+            <cacheType>PHASE</cacheType>
+            <entityComparatorClass>org.droolsplannerdelirium.travelingsanta.domain.solver.LongitudeVisitDifficultyComparator</entityComparatorClass>
+          </entitySelector>
+          <valuePlacer>
+            <valueSelector>
+              <planningVariableName>previousEven</planningVariableName>
+            </valueSelector>
+          </valuePlacer>
+        </queuedEntityPlacer>
+      </constructionHeuristic>
+    </solver>
+  </solverBenchmark>
+  <solverBenchmark>
+    <name>FFD-long-lat</name>
+    <solver>
+      <constructionHeuristic>
+        <queuedEntityPlacer>
+          <entitySelector>
+            <cacheType>PHASE</cacheType>
+            <entityComparatorClass>org.droolsplannerdelirium.travelingsanta.domain.solver.LongitudeVisitDifficultyComparator</entityComparatorClass>
+          </entitySelector>
+          <valuePlacer>
+            <valueSelector>
+              <planningVariableName>previousOdd</planningVariableName>
+            </valueSelector>
+          </valuePlacer>
+        </queuedEntityPlacer>
+      </constructionHeuristic>
+      <constructionHeuristic>
+        <queuedEntityPlacer>
+          <entitySelector>
+            <cacheType>PHASE</cacheType>
+            <entityComparatorClass>org.droolsplannerdelirium.travelingsanta.domain.solver.LatitudeVisitDifficultyComparator</entityComparatorClass>
+          </entitySelector>
+          <valuePlacer>
+            <valueSelector>
+              <planningVariableName>previousEven</planningVariableName>
+            </valueSelector>
+          </valuePlacer>
+        </queuedEntityPlacer>
+      </constructionHeuristic>
     </solver>
   </solverBenchmark>
 </plannerBenchmark>

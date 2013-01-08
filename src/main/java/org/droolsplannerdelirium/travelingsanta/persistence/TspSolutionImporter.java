@@ -73,8 +73,11 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
 
         private void readCityList() throws IOException {
             List<City> cityList = new ArrayList<City>(cityListSize);
-            for (int i = 0; i < cityListSize; i++) {
+            while (true) {
                 String line = bufferedReader.readLine();
+                if (line == null || line.isEmpty()) {
+                    break;
+                }
                 String[] lineTokens = splitBy(line, ",", ",", 3, 3, false, false);
                 City city = new City();
                 // 149945,3197,2073

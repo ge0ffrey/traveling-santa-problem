@@ -80,9 +80,6 @@ public class TspSolutionExporter extends AbstractTxtSolutionExporter {
                 bufferedWriter.newLine();
                 count++;
             }
-            if (count != 150000) {
-                throw new IllegalStateException("The count (" + count + ") should be 150000.");
-            }
         }
 
         private Map<Visit, Integer> buildIndexMap(Domicile domicile, List<Visit> visitList,

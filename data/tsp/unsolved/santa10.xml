@@ -1,0 +1,108 @@
+<TravelingSalesmanTour id="1">
+  <id>0</id>
+  <name></name>
+  <cityList id="2">
+    <City id="3">
+      <id>0</id>
+      <latitude>6178.0</latitude>
+      <longitude>4360.0</longitude>
+    </City>
+    <City id="4">
+      <id>1</id>
+      <latitude>14956.0</latitude>
+      <longitude>10906.0</longitude>
+    </City>
+    <City id="5">
+      <id>2</id>
+      <latitude>8963.0</latitude>
+      <longitude>5071.0</longitude>
+    </City>
+    <City id="6">
+      <id>3</id>
+      <latitude>4105.0</latitude>
+      <longitude>13853.0</longitude>
+    </City>
+    <City id="7">
+      <id>4</id>
+      <latitude>3168.0</latitude>
+      <longitude>18885.0</longitude>
+    </City>
+    <City id="8">
+      <id>5</id>
+      <latitude>14160.0</latitude>
+      <longitude>7439.0</longitude>
+    </City>
+    <City id="9">
+      <id>6</id>
+      <latitude>435.0</latitude>
+      <longitude>16762.0</longitude>
+    </City>
+    <City id="10">
+      <id>7</id>
+      <latitude>554.0</latitude>
+      <longitude>4483.0</longitude>
+    </City>
+    <City id="11">
+      <id>8</id>
+      <latitude>8648.0</latitude>
+      <longitude>8537.0</longitude>
+    </City>
+    <City id="12">
+      <id>9</id>
+      <latitude>2226.0</latitude>
+      <longitude>19069.0</longitude>
+    </City>
+  </cityList>
+  <domicileList id="13">
+    <Domicile id="14">
+      <id>-1</id>
+    </Domicile>
+  </domicileList>
+  <visitList id="15">
+    <Visit id="16">
+      <id>0</id>
+      <city reference="3"/>
+    </Visit>
+    <Visit id="17">
+      <id>1</id>
+      <city reference="4"/>
+    </Visit>
+    <Visit id="18">
+      <id>2</id>
+      <city reference="5"/>
+    </Visit>
+    <Visit id="19">
+      <id>3</id>
+      <city reference="6"/>
+    </Visit>
+    <Visit id="20">
+      <id>4</id>
+      <city reference="7"/>
+    </Visit>
+    <Visit id="21">
+      <id>5</id>
+      <city reference="8"/>
+    </Visit>
+    <Visit id="22">
+      <id>6</id>
+      <city reference="9"/>
+    </Visit>
+    <Visit id="23">
+      <id>7</id>
+      <city reference="10"/>
+    </Visit>
+    <Visit id="24">
+      <id>8</id>
+      <city reference="11"/>
+    </Visit>
+    <Visit id="25">
+      <id>9</id>
+      <city reference="12"/>
+    </Visit>
+  </visitList>
+  <score class="org.drools.planner.core.score.buildin.hardmediumsoft.DefaultHardMediumSoftScore" id="26">
+    <hardScore>0</hardScore>
+    <mediumScore>0</mediumScore>
+    <softScore>0</softScore>
+  </score>
+</TravelingSalesmanTour>

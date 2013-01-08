@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TODO don't use logback-test.xml in src/main/resources (because it is not test code)
+  HACK logback-test.xml overwrites logback.xml (which comes from drools-planner-examples.jar)
+-->
+<configuration>
+
+  <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <!-- %l lowers performance -->
+      <!--<pattern>%d [%t] %-5p %l%n  %m%n</pattern>-->
+      <pattern>%d [%t] %-5p %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="org.drools.planner" level="debug"/>
+
+  <root level="warn">
+    <appender-ref ref="consoleAppender" />
+  </root>
+
+</configuration>
+

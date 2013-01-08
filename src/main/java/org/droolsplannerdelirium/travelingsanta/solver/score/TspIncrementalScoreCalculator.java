@@ -85,6 +85,9 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
                 hardScore--;
             }
             // Do not share reverse edges
+            if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
+                hardScore--;
+            }
             if (previousEven instanceof Visit && ((Visit) previousEven).getPreviousOdd() == visit) {
                 hardScore--;
             }
@@ -104,6 +107,9 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
                 hardScore++;
             }
             // Do not share reverse edges
+            if (previousOdd instanceof Visit && ((Visit) previousOdd).getPreviousEven() == visit) {
+                hardScore++;
+            }
             if (previousEven instanceof Visit && ((Visit) previousEven).getPreviousOdd() == visit) {
                 hardScore++;
             }

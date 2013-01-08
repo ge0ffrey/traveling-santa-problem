@@ -103,10 +103,23 @@ public class TspWorldPanel extends JPanel {
                 g.drawString(city.getName(), x + 3, y - 3);
             }
         }
-        g.setColor(TangoColors.CHOCOLATE_1);
+        g.setColor(TangoColors.BUTTER_1);
         for (Visit visit : travelingSalesmanTour.getVisitList()) {
             if (visit.getPreviousOdd() != null && visit.getPreviousOdd() instanceof Visit) {
                 City previousCity = ((Visit) visit.getPreviousOdd()).getCity();
+                int previousX = translator.translateLongitudeToX(previousCity.getLongitude());
+                int previousY = translator.translateLatitudeToY(previousCity.getLatitude());
+                City city = visit.getCity();
+                int x = translator.translateLongitudeToX(city.getLongitude());
+                int y = translator.translateLatitudeToY(city.getLatitude());
+                g.drawLine(previousX, previousY, x, y);
+            }
+        }
+        // Draw all CHAMELEON before drawing any PLUM
+        g.setColor(TangoColors.PLUM_1);
+        for (Visit visit : travelingSalesmanTour.getVisitList()) {
+            if (visit.getPreviousEven() != null && visit.getPreviousEven() instanceof Visit) {
+                City previousCity = ((Visit) visit.getPreviousEven()).getCity();
                 int previousX = translator.translateLongitudeToX(previousCity.getLongitude());
                 int previousY = translator.translateLatitudeToY(previousCity.getLatitude());
                 City city = visit.getCity();
