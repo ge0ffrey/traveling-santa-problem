@@ -58,11 +58,11 @@ public class Visit extends AbstractPersistable implements Appearance {
         this.previousOdd = previousOdd;
     }
 
-//    @PlanningVariable(chained = true)
-//    @ValueRanges({
-//            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "domicileList"),
-//            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "visitList",
-//                    excludeUninitializedPlanningEntity = true)})
+    @PlanningVariable(chained = true)
+    @ValueRanges({
+            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "domicileList"),
+            @ValueRange(type = ValueRangeType.FROM_SOLUTION_PROPERTY, solutionProperty = "visitList",
+                    excludeUninitializedPlanningEntity = true)})
     public Appearance getPreviousEven() {
         return previousEven;
     }

@@ -21,49 +21,49 @@
         <valueSelector>
           <planningVariableName>previousOdd</planningVariableName>
         </valueSelector>
-        <selectedCountLimit>10000</selectedCountLimit>
+        <!--<selectedCountLimit>1000</selectedCountLimit>-->
       </valuePlacer>
     </queuedEntityPlacer>
   </constructionHeuristic>
-  <!--<constructionHeuristic>-->
-    <!--<queuedEntityPlacer>-->
-      <!--<entitySelector>-->
-        <!--<cacheType>PHASE</cacheType>-->
-      <!--</entitySelector>-->
-      <!--<valuePlacer>-->
-        <!--<valueSelector>-->
-          <!--<planningVariableName>previousEven</planningVariableName>-->
-        <!--</valueSelector>-->
+  <constructionHeuristic>
+    <queuedEntityPlacer>
+      <entitySelector>
+        <cacheType>PHASE</cacheType>
+      </entitySelector>
+      <valuePlacer>
+        <valueSelector>
+          <planningVariableName>previousEven</planningVariableName>
+        </valueSelector>
         <!--<selectedCountLimit>1000</selectedCountLimit>-->
-      <!--</valuePlacer>-->
-    <!--</queuedEntityPlacer>-->
-  <!--</constructionHeuristic>-->
-  <!--<localSearch>-->
-    <!--<unionMoveSelector>-->
-      <!--<changeMoveSelector>-->
-        <!--<valueSelector>-->
-          <!--<planningVariableName>previousOdd</planningVariableName>-->
-        <!--</valueSelector>-->
-      <!--</changeMoveSelector>-->
-      <!--<changeMoveSelector>-->
-        <!--<valueSelector>-->
-          <!--<planningVariableName>previousEven</planningVariableName>-->
-        <!--</valueSelector>-->
-      <!--</changeMoveSelector>-->
-      <!--<swapMoveSelector>-->
-      <!--</swapMoveSelector>-->
-      <!--&lt;!&ndash;<subChainChangeMoveSelector>&ndash;&gt;-->
-        <!--&lt;!&ndash;<selectReversingMoveToo>false</selectReversingMoveToo>&ndash;&gt;-->
-      <!--&lt;!&ndash;</subChainChangeMoveSelector>&ndash;&gt;-->
-      <!--&lt;!&ndash;<subChainSwapMoveSelector>&ndash;&gt;-->
-        <!--&lt;!&ndash;<selectReversingMoveToo>false</selectReversingMoveToo>&ndash;&gt;-->
-      <!--&lt;!&ndash;</subChainSwapMoveSelector>&ndash;&gt;-->
-    <!--</unionMoveSelector>-->
-    <!--<acceptor>-->
-      <!--<planningEntityTabuSize>7</planningEntityTabuSize>-->
-    <!--</acceptor>-->
-    <!--<forager>-->
-      <!--<minimalAcceptedSelection>1000</minimalAcceptedSelection>-->
-    <!--</forager>-->
-  <!--</localSearch>-->
+      </valuePlacer>
+    </queuedEntityPlacer>
+  </constructionHeuristic>
+  <localSearch>
+    <unionMoveSelector>
+      <changeMoveSelector>
+        <valueSelector>
+          <planningVariableName>previousOdd</planningVariableName>
+        </valueSelector>
+      </changeMoveSelector>
+      <changeMoveSelector>
+        <valueSelector>
+          <planningVariableName>previousEven</planningVariableName>
+        </valueSelector>
+      </changeMoveSelector>
+      <swapMoveSelector>
+      </swapMoveSelector>
+      <!--<subChainChangeMoveSelector>-->
+        <!--<selectReversingMoveToo>false</selectReversingMoveToo>-->
+      <!--</subChainChangeMoveSelector>-->
+      <!--<subChainSwapMoveSelector>-->
+        <!--<selectReversingMoveToo>false</selectReversingMoveToo>-->
+      <!--</subChainSwapMoveSelector>-->
+    </unionMoveSelector>
+    <acceptor>
+      <planningEntityTabuSize>7</planningEntityTabuSize>
+    </acceptor>
+    <forager>
+      <minimalAcceptedSelection>1000</minimalAcceptedSelection>
+    </forager>
+  </localSearch>
 </solver>
