@@ -86,7 +86,7 @@ public class TspSolutionExporter extends AbstractTxtSolutionExporter {
                 Map<Appearance, Visit> map) {
             Map<Visit, Integer> indexMap = new HashMap<Visit, Integer>(visitList.size());
             Visit nextVisit = map.get(domicile);
-            int index = 1;
+            int index = 0;
             while (nextVisit != null) {
                 indexMap.put(nextVisit, index);
                 nextVisit = map.get(nextVisit);

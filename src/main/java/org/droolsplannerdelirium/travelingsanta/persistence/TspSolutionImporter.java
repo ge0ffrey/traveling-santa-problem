@@ -17,17 +17,18 @@
 package org.droolsplannerdelirium.travelingsanta.persistence;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.drools.planner.core.solution.Solution;
 import org.drools.planner.examples.common.persistence.AbstractTxtSolutionImporter;
+import org.droolsplannerdelirium.travelingsanta.domain.Appearance;
 import org.droolsplannerdelirium.travelingsanta.domain.City;
 import org.droolsplannerdelirium.travelingsanta.domain.Domicile;
 import org.droolsplannerdelirium.travelingsanta.domain.TravelingSalesmanTour;
 import org.droolsplannerdelirium.travelingsanta.domain.Visit;
-import org.droolsplannerdelirium.travelingsanta.persistence.TspDaoImpl;
 
 @SuppressWarnings("unused")
 public class TspSolutionImporter extends AbstractTxtSolutionImporter {
@@ -56,6 +57,7 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
         private TravelingSalesmanTour travelingSalesmanTour;
 
         private int cityListSize;
+        private boolean solutionInitialized = false;
 
         public Solution readSolution() throws IOException {
             travelingSalesmanTour = new TravelingSalesmanTour();
@@ -63,6 +65,7 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
             readHeaders();
             readCityList();
             createVisitList();
+            initializeVisitList();
             return travelingSalesmanTour;
         }
 
@@ -76,6 +79,10 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
             while (true) {
                 String line = bufferedReader.readLine();
                 if (line == null || line.isEmpty()) {
+                    break;
+                }
+                if (line.equals("path1,path2")) {
+                    solutionInitialized = true;
                     break;
                 }
                 String[] lineTokens = splitBy(line, ",", ",", 3, 3, false, false);
@@ -97,17 +104,55 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
             Domicile domicile = new Domicile();
             domicile.setId(-1L);
             domicileList.add(domicile);
-            int count = 0;
+            int index = 0;
             for (City city : cityList) {
                 Visit visit = new Visit();
                 visit.setId(city.getId());
                 visit.setCity(city);
                 // Notice that we leave the PlanningVariable properties on null
                 visitList.add(visit);
-                count++;
+                index++;
             }
             travelingSalesmanTour.setDomicileList(domicileList);
             travelingSalesmanTour.setVisitList(visitList);
+        }
+
+        private void initializeVisitList() throws IOException {
+            if (!solutionInitialized) {
+                return;
+            }
+            Domicile domicile = travelingSalesmanTour.getDomicileList().get(0);
+            List<Visit> visitList = travelingSalesmanTour.getVisitList();
+            Map<Integer, Visit> oddVisitMap = new HashMap<Integer, Visit>(visitList.size());
+            Map<Visit, Integer> oddIndexMap = new HashMap<Visit, Integer>(visitList.size());
+            Map<Integer, Visit> evenVisitMap = new HashMap<Integer, Visit>(visitList.size());
+            Map<Visit, Integer> evenIndexMap = new HashMap<Visit, Integer>(visitList.size());
+            for (Visit visit : visitList) {
+                String line = bufferedReader.readLine();
+                String[] lineTokens = splitBy(line, ",", ",", 2, 2, false, false);
+                if (!lineTokens[0].equals("null")) {
+                    int oddIndex = Integer.parseInt(lineTokens[0]);
+                    if (oddIndex < 0 || oddIndex >= visitList.size()) {
+                        throw new IllegalArgumentException("Invalid oddIndex (" + oddIndex + ").");
+                    }
+                    oddVisitMap.put(oddIndex, visit);
+                    oddIndexMap.put(visit, oddIndex);
+                }
+                if (!lineTokens[1].equals("null")) {
+                    int evenIndex = Integer.parseInt(lineTokens[1]);
+                    if (evenIndex < 0 || evenIndex >= visitList.size()) {
+                        throw new IllegalArgumentException("Invalid evenIndex (" + evenIndex + ").");
+                    }
+                    evenVisitMap.put(evenIndex, visit);
+                    evenIndexMap.put(visit, evenIndex);
+                }
+            }
+            for (Visit visit : visitList) {
+                int oddIndex = oddIndexMap.get(visit);
+                visit.setPreviousOdd(oddIndex == 0 ? domicile : oddVisitMap.get(oddIndex - 1));
+                int evenIndex = evenIndexMap.get(visit);
+                visit.setPreviousEven(evenIndex == 0 ? domicile : evenVisitMap.get(evenIndex - 1));
+            }
         }
 
     }
