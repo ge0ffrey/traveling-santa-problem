@@ -66,29 +66,29 @@ public class TspSolutionExporter extends AbstractTxtSolutionExporter {
                 oddMap.put(visit.getPreviousOdd(), visit);
                 evenMap.put(visit.getPreviousEven(), visit);
             }
-            Map<Visit, Integer> oddIndexMap = buildIndexMap(domicile, visitList, oddMap);
-            Map<Visit, Integer> evenIndexMap = buildIndexMap(domicile, visitList, evenMap);
-            int count = 0;
-            for (Visit visit : visitList) {
-                Integer oddIndex = oddIndexMap.get(visit);
-                Integer evenIndex = evenIndexMap.get(visit);
-                if (oddIndex == null || evenIndex == null) {
-                    logger.warn("The visit ({}) should has no oddIndex ({}) and evenIndex ({}).",
-                            visit, oddIndex, evenIndex);
+            Map<Integer, Visit> oddIndexMap = buildIndexMap(domicile, visitList, oddMap);
+            Map<Integer, Visit> evenIndexMap = buildIndexMap(domicile, visitList, evenMap);
+            for (int index = 0; index < visitList.size(); index++) {
+                Visit oddVisit = oddIndexMap.get(index);
+                Long oddId = oddVisit == null ? null : oddVisit.getCity().getId();
+                Visit evenVisit = evenIndexMap.get(index);
+                Long evenId = evenVisit == null ? null : evenVisit.getCity().getId();
+                if (oddId == null || evenId == null) {
+                    logger.warn("The index ({}) should has no oddId ({}) and evenId ({}).",
+                            index, oddId, evenId);
                 }
-                bufferedWriter.write(oddIndex + "," + evenIndex);
+                bufferedWriter.write(oddId + "," + evenId);
                 bufferedWriter.newLine();
-                count++;
             }
         }
 
-        private Map<Visit, Integer> buildIndexMap(Domicile domicile, List<Visit> visitList,
+        private Map<Integer, Visit> buildIndexMap(Domicile domicile, List<Visit> visitList,
                 Map<Appearance, Visit> map) {
-            Map<Visit, Integer> indexMap = new HashMap<Visit, Integer>(visitList.size());
+            Map<Integer, Visit> indexMap = new HashMap<Integer, Visit>(visitList.size());
             Visit nextVisit = map.get(domicile);
             int index = 0;
             while (nextVisit != null) {
-                indexMap.put(nextVisit, index);
+                indexMap.put(index, nextVisit);
                 nextVisit = map.get(nextVisit);
                 index++;
             }
