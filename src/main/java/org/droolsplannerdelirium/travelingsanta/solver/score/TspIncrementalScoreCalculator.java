@@ -16,6 +16,11 @@
 
 package org.droolsplannerdelirium.travelingsanta.solver.score;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
 import org.drools.planner.core.score.buildin.hardmediumsoft.DefaultHardMediumSoftScore;
 import org.drools.planner.core.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.drools.planner.core.score.director.incremental.AbstractIncrementalScoreCalculator;
@@ -31,11 +36,24 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
     private double oddScore;
     private double evenScore;
 
+    private NavigableMap<Double, NavigableMap<Double, Visit>> coordinateMap = null;
+
     public void resetWorkingSolution(TravelingSalesmanTour tour) {
         hardScore = 0;
         oddScore = 0.0;
         evenScore = 0.0;
+        coordinateMap = new TreeMap<Double, NavigableMap<Double, Visit>>();
         for (Visit visit : tour.getVisitList()) {
+            City city = visit.getCity();
+            NavigableMap<Double, Visit> subCoordinateMap = coordinateMap.get(city.getLatitude());
+            if (subCoordinateMap == null) {
+                subCoordinateMap = new TreeMap<Double, Visit>();
+                coordinateMap.put(city.getLatitude(), subCoordinateMap);
+            }
+            Visit previousValue = subCoordinateMap.put(city.getLongitude(), visit);
+            if (previousValue != null) {
+                throw new IllegalStateException("Invalid previousValue (" + previousValue + ").");
+            }
             insert(visit);
         }
     }
@@ -123,5 +141,28 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
         return DefaultHardMediumSoftScore.valueOf(hardScore, (int) (mediumScore * 100.0), (int) (softScore * 100.0));
         // return DefaultHardMediumSoftScore.valueOf(hardScore, mediumScore, softScore);
     }
+
+    public List<Visit> findNearVisitList(Visit srcVisit, double distance) {
+        City srcCity = srcVisit.getCity();
+        NavigableMap<Double, NavigableMap<Double, Visit>> partMap = coordinateMap
+                .headMap(srcCity.getLatitude() + distance, true).tailMap(srcCity.getLatitude() - distance, true);
+        List<Visit> nearVisitList = new ArrayList<Visit>(partMap.size() * 10 + 20);
+        for (NavigableMap<Double, Visit> subMap : partMap.values()) {
+            NavigableMap<Double, Visit> partSubMap = subMap
+                    .headMap(srcCity.getLongitude() + distance, true).tailMap(srcCity.getLongitude() - distance, true);
+            for (Visit visit : partSubMap.values()) {
+                if (visit != srcVisit) {
+                    nearVisitList.add(visit);
+                }
+            }
+        }
+        return nearVisitList;
+    }
+
+//    public Visit findNear(Visit srcVisit, int nearCount) {
+//        City srcCity = srcVisit.getCity();
+//        NavigableMap<Double, Visit> subCoordinateMap = coordinateMap.get(srcCity.getLatitude());
+//
+//    }
 
 }
