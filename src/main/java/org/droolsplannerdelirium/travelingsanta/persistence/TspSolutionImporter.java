@@ -123,28 +123,45 @@ public class TspSolutionImporter extends AbstractTxtSolutionImporter {
             }
             Domicile domicile = travelingSalesmanTour.getDomicileList().get(0);
             List<Visit> visitList = travelingSalesmanTour.getVisitList();
+            Map<Long, Visit> idMap = new HashMap<Long, Visit>(visitList.size());
+            for (Visit visit : visitList) {
+                idMap.put(visit.getCity().getId(), visit);
+            }
             Map<Integer, Visit> oddVisitMap = new HashMap<Integer, Visit>(visitList.size());
             Map<Visit, Integer> oddIndexMap = new HashMap<Visit, Integer>(visitList.size());
             Map<Integer, Visit> evenVisitMap = new HashMap<Integer, Visit>(visitList.size());
             Map<Visit, Integer> evenIndexMap = new HashMap<Visit, Integer>(visitList.size());
-            for (Visit visit : visitList) {
+            for (int index = 0; ; index++) {
                 String line = bufferedReader.readLine();
+                if (line == null || line.isEmpty()) {
+                    break;
+                }
                 String[] lineTokens = splitBy(line, ",", ",", 2, 2, false, false);
                 if (!lineTokens[0].equals("null")) {
-                    int oddIndex = Integer.parseInt(lineTokens[0]);
-                    if (oddIndex < 0 || oddIndex >= visitList.size()) {
-                        throw new IllegalArgumentException("Invalid oddIndex (" + oddIndex + ").");
+                    long oddId = Long.parseLong(lineTokens[0]);
+                    if (oddId < 0L || oddId >= visitList.size()) {
+                        throw new IllegalArgumentException("Invalid oddId (" + oddId + ").");
                     }
-                    oddVisitMap.put(oddIndex, visit);
-                    oddIndexMap.put(visit, oddIndex);
+                    Visit oddVisit = idMap.get(oddId);
+                    if (oddVisit == null) {
+                        throw new IllegalArgumentException("Invalid oddVisit (" + oddVisit
+                                + ") for oddId (" + oddId + ").");
+                    }
+                    oddVisitMap.put(index, oddVisit);
+                    oddIndexMap.put(oddVisit, index);
                 }
                 if (!lineTokens[1].equals("null")) {
-                    int evenIndex = Integer.parseInt(lineTokens[1]);
-                    if (evenIndex < 0 || evenIndex >= visitList.size()) {
-                        throw new IllegalArgumentException("Invalid evenIndex (" + evenIndex + ").");
+                    long evenId = Long.parseLong(lineTokens[1]);
+                    if (evenId < 0L || evenId >= visitList.size()) {
+                        throw new IllegalArgumentException("Invalid evenId (" + evenId + ").");
                     }
-                    evenVisitMap.put(evenIndex, visit);
-                    evenIndexMap.put(visit, evenIndex);
+                    Visit evenVisit = idMap.get(evenId);
+                    if (evenVisit == null) {
+                        throw new IllegalArgumentException("Invalid evenVisit (" + evenVisit
+                                + ") for evenId (" + evenId + ").");
+                    }
+                    evenVisitMap.put(index, evenVisit);
+                    evenIndexMap.put(evenVisit, index);
                 }
             }
             for (Visit visit : visitList) {

@@ -28,13 +28,13 @@ import org.droolsplannerdelirium.travelingsanta.domain.Visit;
 public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalculator<TravelingSalesmanTour> {
 
     private int hardScore;
-    private int oddScore;
-    private int evenScore;
+    private double oddScore;
+    private double evenScore;
 
     public void resetWorkingSolution(TravelingSalesmanTour tour) {
         hardScore = 0;
-        oddScore = 0;
-        evenScore = 0;
+        oddScore = 0.0;
+        evenScore = 0.0;
         for (Visit visit : tour.getVisitList()) {
             insert(visit);
         }
@@ -117,9 +117,11 @@ public class TspIncrementalScoreCalculator extends AbstractIncrementalScoreCalcu
     }
 
     public HardMediumSoftScore calculateScore() {
-        int mediumScore = Math.min(oddScore, evenScore);
-        int softScore = Math.max(oddScore, evenScore);
-        return DefaultHardMediumSoftScore.valueOf(hardScore, mediumScore, softScore);
+        double mediumScore = Math.min(oddScore, evenScore);
+        double softScore = Math.max(oddScore, evenScore);
+        // TODO HACK
+        return DefaultHardMediumSoftScore.valueOf(hardScore, (int) (mediumScore * 100.0), (int) (softScore * 100.0));
+        // return DefaultHardMediumSoftScore.valueOf(hardScore, mediumScore, softScore);
     }
 
 }

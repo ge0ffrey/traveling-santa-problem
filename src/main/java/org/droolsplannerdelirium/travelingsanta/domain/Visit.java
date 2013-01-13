@@ -27,7 +27,7 @@ import org.drools.planner.api.domain.variable.ValueRanges;
 import org.drools.planner.examples.common.domain.AbstractPersistable;
 import org.droolsplannerdelirium.travelingsanta.domain.solver.LatitudeVisitDifficultyComparator;
 
-@PlanningEntity(difficultyComparatorClass = LatitudeVisitDifficultyComparator.class)
+@PlanningEntity()
 @XStreamAlias("Visit")
 public class Visit extends AbstractPersistable implements Appearance {
 
@@ -75,21 +75,21 @@ public class Visit extends AbstractPersistable implements Appearance {
     // Complex methods
     // ************************************************************************
 
-    public int getDistanceToPreviousOdd() {
+    public double getDistanceToPreviousOdd() {
         if (previousOdd == null) {
             return 0;
         }
         return getDistanceTo(previousOdd);
     }
 
-    public int getDistanceToPreviousEven() {
+    public double getDistanceToPreviousEven() {
         if (previousEven == null) {
             return 0;
         }
         return getDistanceTo(previousEven);
     }
 
-    public int getDistanceTo(Appearance appearance) {
+    public double getDistanceTo(Appearance appearance) {
         if (appearance instanceof Visit) {
             return city.getDistance(((Visit)appearance).getCity());
         }

@@ -128,13 +128,6 @@ public class TspWorldPanel extends JPanel {
                 g.drawLine(previousX, previousY, x, y);
             }
         }
-        // Legend
-        g.setColor(TangoColors.ALUMINIUM_4);
-        g.fillRect(5, (int) height - 20, 5, 5);
-        g.drawString("Domicile", 15, (int) height - 15);
-        g.setColor(TangoColors.PLUM_2);
-        g.fillRect(6, (int) height - 9, 3, 3);
-        g.drawString("Visit", 15, (int) height - 5);
         repaint();
     }
 
