@@ -1,12 +1,17 @@
 package org.droolsplannerdelirium.travelingsanta.solver.move;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.drools.planner.core.domain.entity.PlanningEntityDescriptor;
+import org.drools.planner.core.domain.variable.PlanningVariableDescriptor;
 import org.drools.planner.core.heuristic.selector.move.factory.MoveIteratorFactory;
+import org.drools.planner.core.heuristic.selector.move.generic.SwapMove;
 import org.drools.planner.core.heuristic.selector.move.generic.chained.ChainedChangeMove;
+import org.drools.planner.core.heuristic.selector.move.generic.chained.ChainedSwapMove;
+import org.drools.planner.core.move.CompositeMove;
 import org.drools.planner.core.move.Move;
 import org.drools.planner.core.score.director.ScoreDirector;
 import org.drools.planner.core.score.director.incremental.IncrementalScoreDirector;
@@ -25,6 +30,8 @@ public class NearChangeMoveIteratorFactory implements MoveIteratorFactory {
     private TravelingSalesmanTour tour;
     private List<Visit> visitList;
     private PlanningEntityDescriptor entityDescriptor;
+    private PlanningVariableDescriptor oddVariableDescriptor;
+    private PlanningVariableDescriptor evenVariableDescriptor;
     private TspIncrementalScoreCalculator scoreCalculator;
     private Domicile domicile;
 
@@ -50,10 +57,11 @@ public class NearChangeMoveIteratorFactory implements MoveIteratorFactory {
         final Iterator<Visit> nearVisitIterator = nearVisitList.iterator();
         return new Iterator<Move>() {
 
+            private int moveTypeIndex = 0;
             private Visit nearVisit = null;
 
             public boolean hasNext() {
-                if (nearVisit == null) {
+                if (moveTypeIndex == 0) {
                     return nearVisitIterator.hasNext();
                 } else {
                     return true;
@@ -61,18 +69,29 @@ public class NearChangeMoveIteratorFactory implements MoveIteratorFactory {
             }
 
             public Move next() {
-                Appearance previousAppearance;
-                String variableName;
-                if (nearVisit == null) {
-                    variableName = "previousOdd";
-                    nearVisit = nearVisitIterator.next();
-                    previousAppearance = nearVisit;
-                } else {
-                    variableName = "previousEven";
-                    previousAppearance = nearVisit;
-                    nearVisit = null;
+                Move move;
+                switch (moveTypeIndex) {
+                    case 0:
+                        nearVisit = nearVisitIterator.next();
+                        move = new ChainedChangeMove(srcVisit, oddVariableDescriptor, nearVisit);
+                        break;
+                    case 1:
+                        move = new ChainedChangeMove(srcVisit, evenVariableDescriptor, nearVisit);
+                        break;
+                    case 2:
+                        move = new CompositeMove(Arrays.<Move>asList(
+                                new ChainedChangeMove(srcVisit, oddVariableDescriptor, nearVisit),
+                                new ChainedChangeMove(srcVisit, evenVariableDescriptor, nearVisit)));
+                        break;
+                    case 3:
+                        move = new ChainedSwapMove(entityDescriptor.getPlanningVariableDescriptors(),
+                                srcVisit, nearVisit);
+                        break;
+                    default:
+                        throw new IllegalStateException("Invalid moveTypeIndex (" + moveTypeIndex + ")");
                 }
-                return new ChainedChangeMove(srcVisit, entityDescriptor.getPlanningVariableDescriptor(variableName), previousAppearance);
+                moveTypeIndex = (moveTypeIndex + 1) % 4;
+                return move;
             }
 
             public void remove() {
@@ -87,6 +106,8 @@ public class NearChangeMoveIteratorFactory implements MoveIteratorFactory {
             tour = (TravelingSalesmanTour) scoreDirector.getWorkingSolution();
             visitList = tour.getVisitList();
             entityDescriptor = scoreDirector.getSolutionDescriptor().getPlanningEntityDescriptor(Visit.class);
+            oddVariableDescriptor = entityDescriptor.getPlanningVariableDescriptor("previousOdd");
+            evenVariableDescriptor = entityDescriptor.getPlanningVariableDescriptor("previousEven");
             scoreCalculator = (TspIncrementalScoreCalculator) ((IncrementalScoreDirector) scoreDirector).getIncrementalScoreCalculator();
             domicile = tour.getDomicileList().get(0);
         }

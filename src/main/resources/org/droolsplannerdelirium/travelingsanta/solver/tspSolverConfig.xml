@@ -10,7 +10,7 @@
   </scoreDirectorFactory>
 
   <termination>
-    <!--<maximumMinutesSpend>2</maximumMinutesSpend>-->
+    <!--<maximumMinutesSpend>5</maximumMinutesSpend>-->
   </termination>
   <constructionHeuristic>
     <queuedEntityPlacer>
@@ -40,18 +40,21 @@
   </constructionHeuristic>
   <localSearch>
     <unionMoveSelector>
-      <changeMoveSelector>
-        <valueSelector>
-          <planningVariableName>previousOdd</planningVariableName>
-        </valueSelector>
-      </changeMoveSelector>
-      <changeMoveSelector>
-        <valueSelector>
-          <planningVariableName>previousEven</planningVariableName>
-        </valueSelector>
-      </changeMoveSelector>
-      <swapMoveSelector>
-      </swapMoveSelector>
+      <moveIteratorFactory>
+        <moveIteratorFactoryClass>org.droolsplannerdelirium.travelingsanta.solver.move.NearChangeMoveIteratorFactory</moveIteratorFactoryClass>
+      </moveIteratorFactory>
+      <!--<changeMoveSelector>-->
+        <!--<valueSelector>-->
+          <!--<planningVariableName>previousOdd</planningVariableName>-->
+        <!--</valueSelector>-->
+      <!--</changeMoveSelector>-->
+      <!--<changeMoveSelector>-->
+        <!--<valueSelector>-->
+          <!--<planningVariableName>previousEven</planningVariableName>-->
+        <!--</valueSelector>-->
+      <!--</changeMoveSelector>-->
+      <!--<swapMoveSelector>-->
+      <!--</swapMoveSelector>-->
       <!--<subChainChangeMoveSelector>-->
         <!--<selectReversingMoveToo>false</selectReversingMoveToo>-->
       <!--</subChainChangeMoveSelector>-->
@@ -59,11 +62,18 @@
         <!--<selectReversingMoveToo>false</selectReversingMoveToo>-->
       <!--</subChainSwapMoveSelector>-->
     </unionMoveSelector>
+    <!--<acceptor>-->
+      <!--<simulatedAnnealingStartingTemperature>2hard/10000medium/10000soft</simulatedAnnealingStartingTemperature>-->
+    <!--</acceptor>-->
+    <!--<forager>-->
+      <!--<minimalAcceptedSelection>4</minimalAcceptedSelection>-->
+    <!--</forager>-->
     <acceptor>
       <planningEntityTabuSize>7</planningEntityTabuSize>
     </acceptor>
     <forager>
-      <minimalAcceptedSelection>10000</minimalAcceptedSelection>
+      <minimalAcceptedSelection>100000</minimalAcceptedSelection>
+      <!--<pickEarlyType>FIRST_BEST_SCORE_IMPROVING</pickEarlyType>-->
     </forager>
   </localSearch>
 </solver>
