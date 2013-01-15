@@ -48,9 +48,9 @@ public class NearChangeMoveIteratorFactory implements MoveIteratorFactory {
     public Iterator<Move> createRandomMoveIterator(ScoreDirector scoreDirector, final Random workingRandom) {
         init(scoreDirector);
         final Visit srcVisit = visitList.get(workingRandom.nextInt(visitList.size()));
-        double distance = 2000.0;
+        double distance = 400.0;
         List<Visit> nearVisitList = scoreCalculator.findNearVisitList(srcVisit, distance);
-        while(nearVisitList.size() < 1000) {
+        while (nearVisitList.size() < 100) {
             distance *= 2;
             nearVisitList = scoreCalculator.findNearVisitList(srcVisit, distance);
         }

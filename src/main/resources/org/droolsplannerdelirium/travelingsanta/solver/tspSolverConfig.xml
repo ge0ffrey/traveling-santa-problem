@@ -43,6 +43,18 @@
       <moveIteratorFactory>
         <moveIteratorFactoryClass>org.droolsplannerdelirium.travelingsanta.solver.move.NearChangeMoveIteratorFactory</moveIteratorFactoryClass>
       </moveIteratorFactory>
+      <moveIteratorFactory>
+        <moveIteratorFactoryClass>org.droolsplannerdelirium.travelingsanta.solver.move.NearChangeMoveIteratorFactory</moveIteratorFactoryClass>
+      </moveIteratorFactory>
+      <moveIteratorFactory>
+        <moveIteratorFactoryClass>org.droolsplannerdelirium.travelingsanta.solver.move.NearChangeMoveIteratorFactory</moveIteratorFactoryClass>
+      </moveIteratorFactory>
+      <moveIteratorFactory>
+        <moveIteratorFactoryClass>org.droolsplannerdelirium.travelingsanta.solver.move.NearChangeMoveIteratorFactory</moveIteratorFactoryClass>
+      </moveIteratorFactory>
+      <moveIteratorFactory>
+        <moveIteratorFactoryClass>org.droolsplannerdelirium.travelingsanta.solver.move.NearChangeMoveIteratorFactory</moveIteratorFactoryClass>
+      </moveIteratorFactory>
       <!--<changeMoveSelector>-->
         <!--<valueSelector>-->
           <!--<planningVariableName>previousOdd</planningVariableName>-->
