@@ -29,7 +29,9 @@ import org.droolsplannerdelirium.travelingsanta.solver.score.TspIncrementalScore
 // TODO this is more hack than code :)
 public class NearChainedChangeMoveIteratorFactory implements MoveIteratorFactory {
 
-//    private static final int NEAR_COUNT_MAX = 100;
+    private static final int SUB_CHAIN_SIZE = 20;
+
+    //    private static final int NEAR_COUNT_MAX = 100;
 
     private boolean init = false;
     private TravelingSalesmanTour tour;
@@ -55,7 +57,7 @@ public class NearChainedChangeMoveIteratorFactory implements MoveIteratorFactory
         final Visit srcVisit = visitList.get(workingRandom.nextInt(visitList.size()));
         double distance = 400.0;
         List<Visit> nearVisitList = scoreCalculator.findNearVisitList(srcVisit, distance);
-        while (nearVisitList.size() < 100) {
+        while (nearVisitList.size() < 50) {
             distance *= 2;
             nearVisitList = scoreCalculator.findNearVisitList(srcVisit, distance);
         }
@@ -95,7 +97,7 @@ public class NearChainedChangeMoveIteratorFactory implements MoveIteratorFactory
                 move = moveTypeIndex % 4 < 2
                         ? new SubChainChangeMove(new SubChain(subChainEntityList), variableDescriptor, nearVisit)
                         : new SubChainReversingChangeMove(new SubChain(subChainEntityList), variableDescriptor, nearVisit);
-                moveTypeIndex = (moveTypeIndex + 1) % (4 * 5);
+                moveTypeIndex = (moveTypeIndex + 1) % (4 * SUB_CHAIN_SIZE);
                 return move;
             }
 
