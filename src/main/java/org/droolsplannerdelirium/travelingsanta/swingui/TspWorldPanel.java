@@ -62,16 +62,16 @@ public class TspWorldPanel extends JPanel {
                 }
             }
         });
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (translator != null) {
-                    double longitude = translator.translateXToLongitude(e.getX());
-                    double latitude = translator.translateYToLatitude(e.getY());
-                    org.droolsplannerdelirium.travelingsanta.swingui.TspWorldPanel.this.tspPanel.insertCityAndVisit(longitude, latitude);
-                }
-            }
-        });
+//        addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                if (translator != null) {
+//                    double longitude = translator.translateXToLongitude(e.getX());
+//                    double latitude = translator.translateYToLatitude(e.getY());
+//                    org.droolsplannerdelirium.travelingsanta.swingui.TspWorldPanel.this.tspPanel.insertCityAndVisit(longitude, latitude);
+//                }
+//            }
+//        });
         europaBackground = new ImageIcon(getClass().getResource(
                 "/org/droolsplannerdelirium/travelingsanta/swingui/europaBackground.png"));
     }
