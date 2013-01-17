@@ -99,7 +99,7 @@
       <planningEntityTabuSize>7</planningEntityTabuSize>
     </acceptor>
     <forager>
-      <minimalAcceptedSelection>100000</minimalAcceptedSelection>
+      <minimalAcceptedSelection>500000</minimalAcceptedSelection>
       <!--<pickEarlyType>FIRST_BEST_SCORE_IMPROVING</pickEarlyType>-->
     </forager>
   </localSearch>
