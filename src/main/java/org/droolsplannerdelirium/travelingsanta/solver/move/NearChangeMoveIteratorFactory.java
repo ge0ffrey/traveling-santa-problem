@@ -1,6 +1,7 @@
 package org.droolsplannerdelirium.travelingsanta.solver.move;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -54,6 +55,7 @@ public class NearChangeMoveIteratorFactory implements MoveIteratorFactory {
             distance *= 2;
             nearVisitList = scoreCalculator.findNearVisitList(srcVisit, distance);
         }
+        Collections.shuffle(nearVisitList, workingRandom);
         final Iterator<Visit> nearVisitIterator = nearVisitList.iterator();
         return new Iterator<Move>() {
 

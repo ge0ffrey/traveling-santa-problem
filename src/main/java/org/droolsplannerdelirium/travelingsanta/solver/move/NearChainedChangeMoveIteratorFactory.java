@@ -61,6 +61,7 @@ public class NearChainedChangeMoveIteratorFactory implements MoveIteratorFactory
             distance *= 2;
             nearVisitList = scoreCalculator.findNearVisitList(srcVisit, distance);
         }
+        Collections.shuffle(nearVisitList, workingRandom);
         final Iterator<Visit> nearVisitIterator = nearVisitList.iterator();
         return new Iterator<Move>() {
 
